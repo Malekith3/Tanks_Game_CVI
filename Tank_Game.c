@@ -22,6 +22,7 @@ int CVICALLBACK QuitCallback (int panel, int control, int event,
 	switch (event)
 	{
 		case EVENT_COMMIT:
+			// Some shity day was yestarday 
 			QuitUserInterface (0);
 			break;
 	}
