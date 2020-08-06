@@ -1,7 +1,6 @@
 [Project Header]
 Version = 1900
 Pathname = "/c/source/Tanks_Game_CVI/Tank_Game.prj"
-Project Label = "Tank_Game"
 CVI Dir = "/c/program files (x86)/national instruments/cvi2019"
 CVI Shared Dir = "/C/Program Files (x86)/National Instruments/Shared/CVI"
 CVI Pub Local Dir = "/C/ProgramData/National Instruments/CVI2019"
@@ -10,7 +9,7 @@ IVI Standard Root Dir = "/C/Program Files (x86)/IVI Foundation/IVI"
 VXIplug&play Framework Dir = "/C/Program Files (x86)/IVI Foundation/VISA/winnt"
 IVI Standard Root 64-bit Dir = "/C/Program Files/IVI Foundation/IVI"
 VXIplug&play Framework 64-bit Dir = "/C/Program Files/IVI Foundation/VISA/win64"
-Number of Files = 4
+Number of Files = 5
 Target Type = "Executable"
 Flags = 2064
 Copied From Locked InstrDrv Directory = False
@@ -69,6 +68,18 @@ Folder Id = 1
 [File 0004]
 File Type = "Include"
 Res Id = 4
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "Tank_Game.h"
+Path = "/c/source/Tanks_Game_CVI/Tank_Game.h"
+Exclude = False
+Project Flags = 0
+Folder = "Include Files"
+Folder Id = 2
+
+[File 0005]
+File Type = "Include"
+Res Id = 5
 Path Is Rel = True
 Path Rel To = "Project"
 Path Rel Path = "Tank_Object.h"

@@ -2,7 +2,9 @@
 #include <userint.h>
 #include "Tank_Game.h"
 #include "Tank_Object.h"
-static int mainPanel;
+
+int mainPanel;
+static int image_tank1;
 
 int main (int argc, char *argv[])
 {
@@ -11,6 +13,11 @@ int main (int argc, char *argv[])
 	if ((mainPanel = LoadPanel (0, "Tank_Game.uir", Main_Panel)) < 0)
 		return -1;
 	DisplayPanel (mainPanel);
+	
+	
+	TANK* tank1 = new_TANK(new_POSITION(10.00,10.00),100.00,new_Image("Assets//Tank.ico"));
+	tank1->Draw(tank1);
+	
 	RunUserInterface ();
 	DiscardPanel (mainPanel);
 	return 0;
@@ -22,7 +29,6 @@ int CVICALLBACK QuitCallback (int panel, int control, int event,
 	switch (event)
 	{
 		case EVENT_COMMIT:
-			// Some shity day was yestarday 
 			QuitUserInterface (0);
 			break;
 	}
