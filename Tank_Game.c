@@ -4,7 +4,7 @@
 #include "Tank_Object.h"
 
 int mainPanel;
-static int image_tank1;
+
 
 int main (int argc, char *argv[])
 {
