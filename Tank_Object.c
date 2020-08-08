@@ -2,7 +2,7 @@
 #include <ansi_c.h>
 #include "Tank_Object.h"
 
-extern int mainPanel;
+extern int gamePanel;
 
 POSITION* new_POSITION(double x,double y)
 {
@@ -19,11 +19,11 @@ TANK* new_TANK(POSITION* position,double angle,int* image)
 	tank->position=position;
 	tank->angle=angle;
 	tank->image=image;
-	tank->MoveForward=MoveForward;
-	tank->Reverse=Reverse;
-	tank->LowerBarrel=LowerBarrel;
-	tank->UpperBarrel=UpperBarrel;
-	tank->Draw=Draw;
+	tank->Move_PosX=&Move_PosX;
+	tank->Move_NegX=&Move_NegX;
+	tank->LowerBarrel=&LowerBarrel;
+	tank->UpperBarrel=&UpperBarrel;
+	tank->Draw=&Draw;
 	
 	return tank;
 }
@@ -33,12 +33,12 @@ int* new_Image(char* path)
 	GetBitmapFromFile(path,image);
 	return image;
 }
-void MoveForward(TANK* tank)
+void Move_PosX(TANK* tank)		//moving in the positive direction of x axis
 {
 	tank->position->x+=2;
 }
 
-void Reverse(TANK* tank)
+void Move_NegX(TANK* tank)		//moving in the negative direction of x axis
 {
 	tank->position->x-=2;
 }
@@ -55,8 +55,8 @@ void UpperBarrel(TANK* tank)
 
 void Draw(TANK* tank)
 {
-	CanvasStartBatchDraw (mainPanel, Main_Panel_CANVAS);
-	CanvasDrawBitmap (mainPanel, Main_Panel_CANVAS, *(tank->image), VAL_ENTIRE_OBJECT, MakeRect(tank->position->x,tank->position->y,150,200));
+	CanvasStartBatchDraw (gamePanel, Game_Panel_CANVAS);
+	CanvasDrawBitmap (gamePanel, Game_Panel_CANVAS, *(tank->image), VAL_ENTIRE_OBJECT, MakeRect (tank->position->y, tank->position->x, 150, 200));
 }
 
 
