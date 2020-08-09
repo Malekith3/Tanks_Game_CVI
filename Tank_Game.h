@@ -40,7 +40,7 @@
 #define  Controls_A_Key_Pic               25      /* control type: picture, callback function: (none) */
 #define  Controls_Esc_Pic                 26      /* control type: picture, callback function: (none) */
 
-#define  Game_Panel                       2       /* callback function: Keys */
+#define  Game_Panel                       2
 #define  Game_Panel_CANVAS                2       /* control type: canvas, callback function: (none) */
 
 #define  Menu_Panel                       3
@@ -62,7 +62,6 @@
      /* Callback Prototypes: */
 
 int  CVICALLBACK Back_To_Main(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
-int  CVICALLBACK Keys(int panel, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK QuitCallback(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK Show_Controls(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK Start_Game(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
