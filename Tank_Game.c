@@ -53,7 +53,7 @@ int CVICALLBACK Start_Game (int panel, int control, int event,
 			HidePanel(menuPanel);					
 			DisplayPanel(gamePanel);
 			for(int i=0;i<2;i++)
-				tanks[i]->Draw(tanks[i]);
+				tanks[i]->Draw_Tank(tanks[i]);
 			break;
 	}
 	return 0;
@@ -145,14 +145,14 @@ switch ( message)
 					if(!turn)
 					{
 						tanks[0]->Move_NegX(tanks[0]);
-						tanks[0]->Draw(tanks[0]);
+						tanks[0]->Draw_Tank(tanks[0]);
 					}
 					break;
 			case 0x44:							//'d' Windows Virtual Key Code
 					if(!turn)
 					{
 						tanks[0]->Move_PosX(tanks[0]);
-						tanks[0]->Draw(tanks[0]);
+						tanks[0]->Draw_Tank(tanks[0]);
 					}
 					break;
 							
@@ -174,14 +174,14 @@ switch ( message)
 					if(turn)
 					{
 						tanks[1]->Move_NegX(tanks[1]);
-						tanks[1]->Draw(tanks[1]);
+						tanks[1]->Draw_Tank(tanks[1]);
 					}
 					break;
 			case 0x27:								//Arrow Right Vkey
 					if(turn)
 					{
 						tanks[1]->Move_PosX(tanks[1]);
-						tanks[1]->Draw(tanks[1]);
+						tanks[1]->Draw_Tank(tanks[1]);
 					}
 					break;		
 		}

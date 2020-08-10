@@ -19,21 +19,11 @@
 // Include files
 
 #include "cvidef.h"
-
-//==============================================================================
-// Constants
-
-//==============================================================================
-// Types
-
-//==============================================================================
-// External variables
-extern TANK* tanks[2]; 
-extern double velocity;
+#include "Tank_Object.h"
 //==============================================================================
 // Global functions
 	void InitVelocety();//    Setting Initial speed of projectile based on how long spacebar is pressed 
-	void CalclTrace(); // Calculating the next position of a projectile in the next frame 
+	void CalclTrace(POSITION* position); // Calculating the next position of a projectile in the next frame 
 
 #ifdef __cplusplus
     }

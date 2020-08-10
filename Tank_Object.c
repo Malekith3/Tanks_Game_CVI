@@ -23,7 +23,7 @@ TANK* new_TANK(POSITION* position,double angle,int* image)
 	tank->Move_NegX=&Move_NegX;
 	tank->LowerBarrel=&LowerBarrel;
 	tank->UpperBarrel=&UpperBarrel;
-	tank->Draw=&Draw;
+	tank->Draw_Tank=&Draw_Tank;
 	
 	return tank;
 }
@@ -53,7 +53,7 @@ void UpperBarrel(TANK* tank)
 	tank->angle+=2;
 }
 
-void Draw(TANK* tank)
+void Draw_Tank(TANK* tank)
 {
 	CanvasStartBatchDraw (gamePanel, Game_Panel_CANVAS);
 	CanvasDrawBitmap (gamePanel, Game_Panel_CANVAS, *(tank->image), VAL_ENTIRE_OBJECT, MakeRect (tank->position->y, tank->position->x, 150, 200));

@@ -18,7 +18,7 @@ typedef struct tank													//defines a Tank object
 	void (*Move_NegX)(struct tank* self);
 	void (*UpperBarrel)(struct tank* self);	
 	void (*LowerBarrel)(struct tank* self);
-	void (*Draw)(struct tank* self);
+	void (*Draw_Tank)(struct tank* self);
 }TANK;
 //-------------------------------------------------------------------------------------------//
 
@@ -30,7 +30,7 @@ void Move_PosX(TANK* tank); 										// Move tank forward
 void Move_NegX(TANK* tank);  											// Move tank backward 
 void LowerBarrel(TANK* tank); 										// Lower angle of barrel 
 void UpperBarrel(TANK* tank); 										// Increase angle of barrel
-void Draw(TANK* tank); 												// Draw tank on canvas
+void Draw_Tank(TANK* tank); 												// Draw tank on canvas
 int* new_Image(char* path); 										// It's a constructor for image pointer 
 #endif 
 //-------------------------------End of File-----------------------------------------------//
