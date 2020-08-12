@@ -7,7 +7,6 @@
 #include "toolbox.h"
 #include "ActiveX_WMP.h"
 #include "Sound.h"
-<<<<<<< HEAD
 #include "Projectile.h"
 
 
@@ -24,24 +23,6 @@ enum status {First_Tank_Fire,Second_Tank_Fire,No_One_Fire};
 enum status turn;
 int cnt = 0;
 
-
-=======
-#include "Physics_Engine.h"
-
-///////////////////////////Functions/////////////////////
-void InitializeTanks();
-int CVICALLBACK KeyupCallback(int gamePanel, int message,
-                              unsigned int* wParam,
-                              unsigned int* lParam,
-                              void* callbackData);
-//-----------------------------------------------------------
-
-int menuPanel,gamePanel,controlsPanel,wmp_Panel;
-static int turn;
-double velocity;
-TANK* tanks[2];
-static int postinghandle;
->>>>>>> activex
 int main (int argc, char *argv[])
 {
 	if (InitCVIRTE (0, argv, 0) == 0)
@@ -59,16 +40,15 @@ int main (int argc, char *argv[])
 	InstallWinMsgCallback (gamePanel, WM_KEYDOWN, KeyupCallback,
 							VAL_MODE_IN_QUEUE, NULL, &postinghandle);
 	InitializeTanks();
-<<<<<<< HEAD
 	DisplayPanel (menuPanel);
-=======
+
 	//------------------------Sound Configuration---------------------------------------------
 																						
 	Create_WMP_Handle();
 	PlaySound(ThemeSong);
 	SetVolume(100);
 //---------------------------------------------------------------------------------------------
->>>>>>> activex
+
 	RunUserInterface ();
 	DiscardPanel (menuPanel);
 	DiscardPanel (gamePanel);
@@ -159,12 +139,6 @@ switch ( message)
 					SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
 				}
 				turn=!turn;
-<<<<<<< HEAD
-=======
-				//InitVelocety(); Those Function is for debuging porpuses 
-				//CalclTrace();
-				PlaySound(ShootingSFX);
->>>>>>> activex
 				velocity = 0.00;
 				break;
 		}
@@ -173,13 +147,11 @@ switch ( message)
 		
 		switch (*wParam)
 		{
-<<<<<<< HEAD
+
 			case VK_SPACE:		//space Key 		
 				velocity+=5.00;	// When you hold space key velocity will increase 
-=======
-			case VK_SPACE:		//space Key
-				velocity+=1.00;	// When you hold space key velocity will increase 
->>>>>>> activex
+
+
 				break;
 				
 			case VK_ESCAPE:								//Esc KEY

@@ -9,7 +9,7 @@ IVI Standard Root Dir = "/C/Program Files (x86)/IVI Foundation/IVI"
 VXIplug&play Framework Dir = "/C/Program Files (x86)/IVI Foundation/VISA/winnt"
 IVI Standard Root 64-bit Dir = "/C/Program Files/IVI Foundation/IVI"
 VXIplug&play Framework 64-bit Dir = "/C/Program Files/IVI Foundation/VISA/win64"
-Number of Files = 9
+Number of Files = 13
 Target Type = "Executable"
 Flags = 2064
 Copied From Locked InstrDrv Directory = False
@@ -18,7 +18,6 @@ Locked InstrDrv Name = ""
 Don't Display Deploy InstrDrv Dialog = False
 
 [Folders]
-Instrument Files Folder Not Added Yet = True
 Library Files Folder Not Added Yet = True
 Folder 0 = "User Interface Files"
 FolderEx 0 = "User Interface Files"
@@ -46,8 +45,8 @@ File Type = "CSource"
 Res Id = 2
 Path Is Rel = True
 Path Rel To = "Project"
-Path Rel Path = "Physics_Engine.c"
-Path = "/c/source/Tanks_Game_CVI/Physics_Engine.c"
+Path Rel Path = "ActiveX_WMP.c"
+Path = "/c/source/Tanks_Game_CVI/ActiveX_WMP.c"
 Exclude = False
 Compile Into Object File = False
 Project Flags = 0
@@ -59,8 +58,8 @@ File Type = "CSource"
 Res Id = 3
 Path Is Rel = True
 Path Rel To = "Project"
-Path Rel Path = "Projectile.c"
-Path = "/c/source/Tanks_Game_CVI/Projectile.c"
+Path Rel Path = "Physics_Engine.c"
+Path = "/c/source/Tanks_Game_CVI/Physics_Engine.c"
 Exclude = False
 Compile Into Object File = False
 Project Flags = 0
@@ -72,8 +71,8 @@ File Type = "CSource"
 Res Id = 4
 Path Is Rel = True
 Path Rel To = "Project"
-Path Rel Path = "Tank_Game.c"
-Path = "/c/source/Tanks_Game_CVI/Tank_Game.c"
+Path Rel Path = "Projectile.c"
+Path = "/c/source/Tanks_Game_CVI/Projectile.c"
 Exclude = False
 Compile Into Object File = False
 Project Flags = 0
@@ -85,6 +84,32 @@ File Type = "CSource"
 Res Id = 5
 Path Is Rel = True
 Path Rel To = "Project"
+Path Rel Path = "Sound.c"
+Path = "/c/source/Tanks_Game_CVI/Sound.c"
+Exclude = False
+Compile Into Object File = False
+Project Flags = 0
+Folder = "Source Files"
+Folder Id = 1
+
+[File 0006]
+File Type = "CSource"
+Res Id = 6
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "Tank_Game.c"
+Path = "/c/source/Tanks_Game_CVI/Tank_Game.c"
+Exclude = False
+Compile Into Object File = False
+Project Flags = 0
+Folder = "Source Files"
+Folder Id = 1
+
+[File 0007]
+File Type = "CSource"
+Res Id = 7
+Path Is Rel = True
+Path Rel To = "Project"
 Path Rel Path = "Tank_Object.c"
 Path = "/c/source/Tanks_Game_CVI/Tank_Object.c"
 Exclude = False
@@ -93,9 +118,21 @@ Project Flags = 0
 Folder = "Source Files"
 Folder Id = 1
 
-[File 0006]
+[File 0008]
 File Type = "Include"
-Res Id = 6
+Res Id = 8
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "ActiveX_WMP.h"
+Path = "/c/source/Tanks_Game_CVI/ActiveX_WMP.h"
+Exclude = False
+Project Flags = 0
+Folder = "Include Files"
+Folder Id = 2
+
+[File 0009]
+File Type = "Include"
+Res Id = 9
 Path Is Rel = True
 Path Rel To = "Project"
 Path Rel Path = "Physics_Engine.h"
@@ -105,9 +142,9 @@ Project Flags = 0
 Folder = "Include Files"
 Folder Id = 2
 
-[File 0007]
+[File 0010]
 File Type = "Include"
-Res Id = 7
+Res Id = 10
 Path Is Rel = True
 Path Rel To = "Project"
 Path Rel Path = "Projectile.h"
@@ -117,9 +154,21 @@ Project Flags = 0
 Folder = "Include Files"
 Folder Id = 2
 
-[File 0008]
+[File 0011]
 File Type = "Include"
-Res Id = 8
+Res Id = 11
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "Sound.h"
+Path = "/c/source/Tanks_Game_CVI/Sound.h"
+Exclude = False
+Project Flags = 0
+Folder = "Include Files"
+Folder Id = 2
+
+[File 0012]
+File Type = "Include"
+Res Id = 12
 Path Is Rel = True
 Path Rel To = "Project"
 Path Rel Path = "Tank_Game.h"
@@ -129,9 +178,9 @@ Project Flags = 0
 Folder = "Include Files"
 Folder Id = 2
 
-[File 0009]
+[File 0013]
 File Type = "Include"
-Res Id = 9
+Res Id = 13
 Path Is Rel = True
 Path Rel To = "Project"
 Path Rel Path = "Tank_Object.h"

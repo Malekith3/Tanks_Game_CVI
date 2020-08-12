@@ -19,8 +19,6 @@
 // Include files
 
 #include "cvidef.h"
-#include "ActiveX_WMP.h"
-#include "Tank_Game.h"
 //==============================================================================
 // Constants
 #define ThemeSong "Sounds\\ha_ha_youre_dead_lyrics_green_day.mp3"
@@ -30,7 +28,6 @@
 
 //==============================================================================
 // External variables
-extern CAObjHandle WMP_Handle;
 extern int wmp_Panel;
 //==============================================================================
 // Global functions

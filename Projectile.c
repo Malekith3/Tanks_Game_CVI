@@ -16,6 +16,7 @@
 #include "Projectile.h"
 #include "Physics_Engine.h"
 #include "Tank_Game.h"
+#include "Sound.h"
 //==============================================================================
 // Constants
 
@@ -49,6 +50,7 @@ PROJECTILE* new_PROJECTILE(POSITION* position)
 }
 void Fire_Projectile(PROJECTILE* projectile , TANK* tank)
 {
+	PlaySound(ShootingSFX);
 	InitVelocety(tank);
 	projectile->position->x = tank->position->x +200;
 	projectile->position->y = tank->position->y +50;
