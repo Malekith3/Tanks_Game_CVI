@@ -42,6 +42,7 @@
 
 #define  Game_Panel                       2
 #define  Game_Panel_CANVAS                2       /* control type: canvas, callback function: (none) */
+#define  Game_Panel_TIMER                 3       /* control type: timer, callback function: MyTimer */
 
 #define  Menu_Panel                       3
 #define  Menu_Panel_Start_Game            2       /* control type: command, callback function: Start_Game */
@@ -62,6 +63,7 @@
      /* Callback Prototypes: */
 
 int  CVICALLBACK Back_To_Main(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
+int  CVICALLBACK MyTimer(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK QuitCallback(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK Show_Controls(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK Start_Game(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);

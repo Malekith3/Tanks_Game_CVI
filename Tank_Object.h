@@ -34,4 +34,3 @@ void Draw_Tank(TANK* tank); 												// Draw tank on canvas
 int* new_Image(char* path); 										// It's a constructor for image pointer 
 #endif 
 //-------------------------------End of File-----------------------------------------------//
-

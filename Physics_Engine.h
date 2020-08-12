@@ -22,7 +22,7 @@
 #include "Tank_Object.h"
 //==============================================================================
 // Global functions
-	void InitVelocety();//    Setting Initial speed of projectile based on how long spacebar is pressed 
+	void InitVelocety(TANK* tank);//    Setting Initial speed of projectile based on how long spacebar is pressed 
 	void CalclTrace(POSITION* position); // Calculating the next position of a projectile in the next frame 
 
 #ifdef __cplusplus

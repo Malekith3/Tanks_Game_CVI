@@ -5,21 +5,23 @@
 #include "Tank_Object.h"
 #include <Windows.h>
 #include "toolbox.h"
-#include "Physics_Engine.h"
+#include "Projectile.h"
 
 
 ///////////////////////////Functions/////////////////////
 void InitializeTanks();
-int CVICALLBACK KeyupCallback(int gamePanel, int message,
-                              unsigned int* wParam,
-                              unsigned int* lParam,
-                              void* callbackData);
-
+int CVICALLBACK KeyupCallback(int gamePanel, int message,unsigned int* wParam,unsigned int* lParam,void* callbackData);
 int menuPanel,gamePanel,controlsPanel;
 static int turn;
 double velocity;
- TANK* tanks[2];
- static int postinghandle;
+static PROJECTILE* projectile;
+TANK* tanks[2];
+static int postinghandle;
+enum status {First_Tank_Fire,Second_Tank_Fire,No_One_Fire};
+enum status turn;
+int cnt = 0;
+
+
 int main (int argc, char *argv[])
 {
 	if (InitCVIRTE (0, argv, 0) == 0)
@@ -34,8 +36,8 @@ int main (int argc, char *argv[])
 							VAL_MODE_IN_QUEUE, NULL, &postinghandle);
 	InstallWinMsgCallback (gamePanel, WM_KEYDOWN, KeyupCallback,
 							VAL_MODE_IN_QUEUE, NULL, &postinghandle);
-	DisplayPanel (menuPanel);
 	InitializeTanks();
+	DisplayPanel (menuPanel);
 	RunUserInterface ();
 	DiscardPanel (menuPanel);
 	DiscardPanel (gamePanel);
@@ -108,9 +110,22 @@ switch ( message)
 		switch(*wParam)
 		{
 			case VK_SPACE:
+				
+				
+				if(!turn)
+				{
+					turn = First_Tank_Fire;
+					Fire_Projectile(projectile,tanks[0]);
+					SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
+					
+				}
+				else
+				{
+					turn = Second_Tank_Fire;
+					Fire_Projectile(projectile,tanks[1]);
+					SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
+				}
 				turn=!turn;
-				//InitVelocety(); Those Function is for debuging porpuses 
-				//CalclTrace();
 				velocity = 0.00;
 				break;
 		}
@@ -120,7 +135,7 @@ switch ( message)
 		switch (*wParam)
 		{
 			case VK_SPACE:		//space Key 		
-				velocity+=1.00;	// When you hold space key velocity will increase 
+				velocity+=5.00;	// When you hold space key velocity will increase 
 				break;
 				
 			case VK_ESCAPE:								//Esc KEY
@@ -188,10 +203,33 @@ switch ( message)
 }
 	return 0;
 }
+int CVICALLBACK MyTimer (int panel, int control, int event,
+						 void *callbackData, int eventData1, int eventData2)
+{
+	 
+	switch (event)
+	{
+		case EVENT_TIMER_TICK:
+			Draw_Projectile(projectile);
+			cnt++;
+			if(cnt == 1000)
+			{
+				cnt=0;
+				SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
+			
+			}
+			break;	
+			
+						
+	}
+	return 0;
+}
 
 void InitializeTanks()
 {
-	tanks[0]=new_TANK(new_POSITION(10.00,100.00),50.00,new_Image("Assets//Tank.ico"));
-	tanks[1]=new_TANK(new_POSITION(740.00,100.00),50.00,new_Image("Assets//Tank2.ico"));
-	
+	tanks[0]=new_TANK(new_POSITION(10.00,500.00),50.00,new_Image("Assets//Tank.ico"));
+	tanks[1]=new_TANK(new_POSITION(740.00,500.00),130.00,new_Image("Assets//Tank2.ico"));
+	projectile = new_PROJECTILE(new_POSITION(0,0));
 }
+
+
