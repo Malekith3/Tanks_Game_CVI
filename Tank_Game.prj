@@ -26,6 +26,8 @@ Folder 1 = "Source Files"
 FolderEx 1 = "Source Files"
 Folder 2 = "Include Files"
 FolderEx 2 = "Include Files"
+Folder 3 = "Instrument Files"
+FolderEx 3 = "Instrument Files"
 
 [File 0001]
 File Type = "User Interface Resource"

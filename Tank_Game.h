@@ -49,6 +49,9 @@
 #define  Menu_Panel_Controls_Button       3       /* control type: command, callback function: Show_Controls */
 #define  Menu_Panel_QUITBUTTON            4       /* control type: command, callback function: QuitCallback */
 
+#define  WMP_Panel                        4
+#define  WMP_Panel_WINDOWSMEDIAPLAYER     2       /* control type: activeX, callback function: (none) */
+
 
      /* Control Arrays: */
 

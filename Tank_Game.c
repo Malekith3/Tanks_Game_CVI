@@ -5,13 +5,16 @@
 #include "Tank_Object.h"
 #include <Windows.h>
 #include "toolbox.h"
+#include "ActiveX_WMP.h"
+#include "Sound.h"
+<<<<<<< HEAD
 #include "Projectile.h"
 
 
 ///////////////////////////Functions/////////////////////
 void InitializeTanks();
 int CVICALLBACK KeyupCallback(int gamePanel, int message,unsigned int* wParam,unsigned int* lParam,void* callbackData);
-int menuPanel,gamePanel,controlsPanel;
+int menuPanel,gamePanel,controlsPanel,wmp_Panel;
 static int turn;
 double velocity;
 static PROJECTILE* projectile;
@@ -22,6 +25,23 @@ enum status turn;
 int cnt = 0;
 
 
+=======
+#include "Physics_Engine.h"
+
+///////////////////////////Functions/////////////////////
+void InitializeTanks();
+int CVICALLBACK KeyupCallback(int gamePanel, int message,
+                              unsigned int* wParam,
+                              unsigned int* lParam,
+                              void* callbackData);
+//-----------------------------------------------------------
+
+int menuPanel,gamePanel,controlsPanel,wmp_Panel;
+static int turn;
+double velocity;
+TANK* tanks[2];
+static int postinghandle;
+>>>>>>> activex
 int main (int argc, char *argv[])
 {
 	if (InitCVIRTE (0, argv, 0) == 0)
@@ -32,16 +52,28 @@ int main (int argc, char *argv[])
 		return -1;
 	if ((controlsPanel = LoadPanel (0, "Tank_Game.uir", Controls)) < 0)
 		return -1;
+	if ((wmp_Panel = LoadPanel (0, "Tank_Game.uir", WMP_Panel)) < 0)
+		return -1;
 	InstallWinMsgCallback (gamePanel, WM_KEYUP, KeyupCallback,
 							VAL_MODE_IN_QUEUE, NULL, &postinghandle);
 	InstallWinMsgCallback (gamePanel, WM_KEYDOWN, KeyupCallback,
 							VAL_MODE_IN_QUEUE, NULL, &postinghandle);
 	InitializeTanks();
+<<<<<<< HEAD
 	DisplayPanel (menuPanel);
+=======
+	//------------------------Sound Configuration---------------------------------------------
+																						
+	Create_WMP_Handle();
+	PlaySound(ThemeSong);
+	SetVolume(100);
+//---------------------------------------------------------------------------------------------
+>>>>>>> activex
 	RunUserInterface ();
 	DiscardPanel (menuPanel);
 	DiscardPanel (gamePanel);
 	DiscardPanel (controlsPanel);
+	DiscardPanel (wmp_Panel);
 	return 0;
 }
 
@@ -52,6 +84,7 @@ int CVICALLBACK Start_Game (int panel, int control, int event,
 	switch (event)
 	{
 		case EVENT_COMMIT:
+			StopSound();
 			HidePanel(menuPanel);					
 			DisplayPanel(gamePanel);
 			for(int i=0;i<2;i++)
@@ -126,6 +159,12 @@ switch ( message)
 					SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
 				}
 				turn=!turn;
+<<<<<<< HEAD
+=======
+				//InitVelocety(); Those Function is for debuging porpuses 
+				//CalclTrace();
+				PlaySound(ShootingSFX);
+>>>>>>> activex
 				velocity = 0.00;
 				break;
 		}
@@ -134,8 +173,13 @@ switch ( message)
 		
 		switch (*wParam)
 		{
+<<<<<<< HEAD
 			case VK_SPACE:		//space Key 		
 				velocity+=5.00;	// When you hold space key velocity will increase 
+=======
+			case VK_SPACE:		//space Key
+				velocity+=1.00;	// When you hold space key velocity will increase 
+>>>>>>> activex
 				break;
 				
 			case VK_ESCAPE:								//Esc KEY
