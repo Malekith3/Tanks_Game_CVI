@@ -12,9 +12,9 @@
 
 ///////////////////////////Functions/////////////////////
 void InitializeTanks();
-int CVICALLBACK KeyupCallback(int gamePanel, int message,unsigned int* wParam,unsigned int* lParam,void* callbackData);
-int menuPanel,gamePanel,controlsPanel,wmp_Panel;
-static int turn;
+int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsigned int* lParam,void* callbackData);
+int menuPanel,gamePanel,controlsPanel,wmp_Panel,optionsPanel;
+static int turn,pause=0;
 double velocity;
 static PROJECTILE* projectile;
 TANK* tanks[2];
@@ -35,10 +35,14 @@ int main (int argc, char *argv[])
 		return -1;
 	if ((wmp_Panel = LoadPanel (0, "Tank_Game.uir", WMP_Panel)) < 0)
 		return -1;
+	if ((optionsPanel = LoadPanel (0, "Tank_Game.uir", OptionsScr)) < 0)
+		return -1;
 	InstallWinMsgCallback (gamePanel, WM_KEYUP, KeyupCallback,
 							VAL_MODE_IN_QUEUE, NULL, &postinghandle);
 	InstallWinMsgCallback (gamePanel, WM_KEYDOWN, KeyupCallback,
 							VAL_MODE_IN_QUEUE, NULL, &postinghandle);
+	InstallWinMsgCallback (optionsPanel, WM_KEYDOWN, KeyupCallback,
+							VAL_MODE_IN_QUEUE, NULL, &postinghandle);	//so ESC wiil work for options menu as well(need to be checked later)
 	InitializeTanks();
 	DisplayPanel (menuPanel);
 
@@ -46,7 +50,10 @@ int main (int argc, char *argv[])
 																						
 	Create_WMP_Handle();
 	PlaySound(ThemeSong);
-	SetVolume(100);
+	SetVolume(InitialVolume);
+	SetCtrlVal (menuPanel, Menu_Panel_NUMERICSLIDE, InitialVolume);
+	SetCtrlVal (optionsPanel, OptionsScr_NUMERICSLIDE, InitialVolume);
+	
 //---------------------------------------------------------------------------------------------
 
 	RunUserInterface ();
@@ -95,7 +102,8 @@ int CVICALLBACK QuitCallback (int panel, int control, int event,
 	switch (event)
 	{
 		case EVENT_COMMIT:
-			QuitUserInterface(0);
+			if(GenericMessagePopup ("Quit Confirmation", "Are you sure you want to quit?", "Yes", "No", 0, 0, 0, 0, VAL_GENERIC_POPUP_BTN1, VAL_GENERIC_POPUP_BTN1, VAL_GENERIC_POPUP_BTN2)==VAL_GENERIC_POPUP_BTN1)	//Yes
+						QuitUserInterface(0);
 			break;
 	}
 	return 0;
@@ -113,7 +121,7 @@ int CVICALLBACK Back_To_Main (int panel, int control, int event,
 	}
 	return 0;
 }
-int CVICALLBACK KeyupCallback(int gamePanel, int message,unsigned int* wParam,unsigned int* lParam, void* callbackData)
+int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsigned int* lParam, void* callbackData)
 {
 	
 switch ( message)	
@@ -122,24 +130,26 @@ switch ( message)
 		
 		switch(*wParam)
 		{
-			case VK_SPACE:
-				
-				
-				if(!turn)
+			case VK_SPACE:		//space key
+				if(!pause)		//0 is unpaused
 				{
-					turn = First_Tank_Fire;
-					Fire_Projectile(projectile,tanks[0]);
-					SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
+				
+					if(!turn)
+					{
+						turn = First_Tank_Fire;
+						Fire_Projectile(projectile,tanks[0]);
+						SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
 					
+					}
+					else
+					{
+						turn = Second_Tank_Fire;
+						Fire_Projectile(projectile,tanks[1]);
+						SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
+					}
+					turn=!turn;
+					velocity = 0.00;
 				}
-				else
-				{
-					turn = Second_Tank_Fire;
-					Fire_Projectile(projectile,tanks[1]);
-					SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
-				}
-				turn=!turn;
-				velocity = 0.00;
 				break;
 		}
 		
@@ -148,39 +158,42 @@ switch ( message)
 		switch (*wParam)
 		{
 
-			case VK_SPACE:		//space Key 		
-				velocity+=5.00;	// When you hold space key velocity will increase 
-
-
+			case VK_SPACE:		//space Key 
+				if(!pause)
+					velocity+=5.00;	// When you hold space key velocity will increase 
 				break;
 				
 			case VK_ESCAPE:								//Esc KEY
-					if(GenericMessagePopup ("Quit Confirmation", "Are you sure you want to quit?", "Yes", "No", 0, 0, 0, 0, VAL_GENERIC_POPUP_BTN1, VAL_GENERIC_POPUP_BTN1, VAL_GENERIC_POPUP_BTN2)==VAL_GENERIC_POPUP_BTN1)	//Yes
-						QuitUserInterface(0);
+					pause=!pause;
+					if(pause)						//the game has paused
+						DisplayPanel(optionsPanel);	//show options menu
+					else							//unpause the game
+						HidePanel(optionsPanel);
 					break;
+					
 			case 0x57:								//'w' Windows Virtual Key Code(it is not case-sensitive of course because it is the same key)
-					if(!turn)						//active only at the turn of the left tank
+					if(!turn&&!pause)						//active only at the turn of the left tank and when unpaused
 					{
 						tanks[0]->UpperBarrel(tanks[0]);
 						printf("%lf\n",tanks[0]->angle);	//garbage
 					}
 					break;
 			case 0x53:							//'s' Windows Virtual Key Code
-					if(!turn)
+					if(!turn&&!pause)
 					{
 						tanks[0]->LowerBarrel(tanks[0]);
 						printf("%lf\n",tanks[0]->angle);	//garbage
 					}
 					break;
 		    case 0x41:							//'a' Windows Virtual Key Code
-					if(!turn)
+					if(!turn&&!pause)
 					{
 						tanks[0]->Move_NegX(tanks[0]);
 						tanks[0]->Draw_Tank(tanks[0]);
 					}
 					break;
 			case 0x44:							//'d' Windows Virtual Key Code
-					if(!turn)
+					if(!turn&&!pause)
 					{
 						tanks[0]->Move_PosX(tanks[0]);
 						tanks[0]->Draw_Tank(tanks[0]);
@@ -188,33 +201,38 @@ switch ( message)
 					break;
 							
 			case 0x26:								//Arrow Up Vkey
-					if(turn)
+					if(turn&&!pause)
 					{
 						tanks[1]->UpperBarrel(tanks[1]);
 						printf("%lf\n",tanks[1]->angle);	//garbage
 					}
 					break;
 			case 0x28: 							//Arrow Down Vkey
-					if(turn)
+					if(turn&&!pause)
 					{
 						tanks[1]->LowerBarrel(tanks[1]);
 						printf("%lf\n",tanks[1]->angle);	//garbage
 					}
 					break;
 			case 0x25:								//Arrow Left Vkey
-					if(turn)
+					if(turn&&!pause)
 					{
 						tanks[1]->Move_NegX(tanks[1]);
 						tanks[1]->Draw_Tank(tanks[1]);
 					}
 					break;
 			case 0x27:								//Arrow Right Vkey
-					if(turn)
+					if(turn&&!pause)
 					{
 						tanks[1]->Move_PosX(tanks[1]);
 						tanks[1]->Draw_Tank(tanks[1]);
 					}
-					break;		
+					break;
+					
+			/*case 0x4D:								//'M' key(need to figure out what's wrong...)
+				ToggleMute();
+				break;*/
+			
 		}
 }
 	return 0;
@@ -241,11 +259,61 @@ int CVICALLBACK MyTimer (int panel, int control, int event,
 	return 0;
 }
 
+int CVICALLBACK Mute_Callback (int panel, int control, int event,
+							   void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+	{
+		case EVENT_COMMIT:
+			ToggleMute();
+			break;
+	}
+	return 0;
+}
+
+int CVICALLBACK ResumeGame (int panel, int control, int event,
+							void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+	{
+		case EVENT_COMMIT:
+			pause=0;					//unpause the game
+			HidePanel(optionsPanel);
+			HidePanel(controlsPanel);	//show only game panel
+			break;
+	}
+	return 0;
+}
+
+int CVICALLBACK ChangeVolume (int panel, int control, int event,
+							  void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+	{
+		case EVENT_COMMIT:
+			int volume;
+			int visible;
+			GetPanelAttribute (menuPanel, ATTR_VISIBLE, &visible);
+			if(visible)														//user wants to change volume from main panel
+				GetCtrlVal (menuPanel, Menu_Panel_NUMERICSLIDE, &volume);
+			else															//user wants to change vokume from optopms menu							
+				GetCtrlVal (optionsPanel, OptionsScr_NUMERICSLIDE, &volume);
+			
+			SetVolume(volume);
+			break;
+	}
+	return 0;
+}
+
+
+
 void InitializeTanks()
 {
 	tanks[0]=new_TANK(new_POSITION(10.00,500.00),50.00,new_Image("Assets//Tank.ico"));
 	tanks[1]=new_TANK(new_POSITION(740.00,500.00),130.00,new_Image("Assets//Tank2.ico"));
 	projectile = new_PROJECTILE(new_POSITION(0,0));
 }
+
+
 
 

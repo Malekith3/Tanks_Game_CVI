@@ -25,20 +25,23 @@
 #define  Controls_RightTank_Forward_Str   10      /* control type: string, callback function: (none) */
 #define  Controls_LeftTank_Down_String    11      /* control type: string, callback function: (none) */
 #define  Controls_RightTank_Down_String   12      /* control type: string, callback function: (none) */
-#define  Controls_Quit_String             13      /* control type: string, callback function: (none) */
-#define  Controls_LeftTank_Up_String      14      /* control type: string, callback function: (none) */
-#define  Controls_RightTank_Up_String     15      /* control type: string, callback function: (none) */
-#define  Controls_ArrowDownPic            16      /* control type: picture, callback function: (none) */
-#define  Controls_ArrowRightPic           17      /* control type: picture, callback function: (none) */
-#define  Controls_PICTURE_2               18      /* control type: picture, callback function: (none) */
-#define  Controls_W_Key_Pic               19      /* control type: picture, callback function: (none) */
-#define  Controls_PICTURE                 20      /* control type: picture, callback function: (none) */
-#define  Controls_SpaceBarPic             21      /* control type: picture, callback function: (none) */
-#define  Controls_S_Key_Pic               22      /* control type: picture, callback function: (none) */
-#define  Controls_D_Key_Pic               23      /* control type: picture, callback function: (none) */
-#define  Controls_Back_Button             24      /* control type: command, callback function: Back_To_Main */
-#define  Controls_A_Key_Pic               25      /* control type: picture, callback function: (none) */
-#define  Controls_Esc_Pic                 26      /* control type: picture, callback function: (none) */
+#define  Controls_Mute_String             13      /* control type: string, callback function: (none) */
+#define  Controls_Options_String          14      /* control type: string, callback function: (none) */
+#define  Controls_LeftTank_Up_String      15      /* control type: string, callback function: (none) */
+#define  Controls_RightTank_Up_String     16      /* control type: string, callback function: (none) */
+#define  Controls_ArrowDownPic            17      /* control type: picture, callback function: (none) */
+#define  Controls_ArrowRightPic           18      /* control type: picture, callback function: (none) */
+#define  Controls_PICTURE_2               19      /* control type: picture, callback function: (none) */
+#define  Controls_W_Key_Pic               20      /* control type: picture, callback function: (none) */
+#define  Controls_PICTURE                 21      /* control type: picture, callback function: (none) */
+#define  Controls_SpaceBarPic             22      /* control type: picture, callback function: (none) */
+#define  Controls_S_Key_Pic               23      /* control type: picture, callback function: (none) */
+#define  Controls_D_Key_Pic               24      /* control type: picture, callback function: (none) */
+#define  Controls_Back_Button             25      /* control type: command, callback function: Back_To_Main */
+#define  Controls_A_Key_Pic               26      /* control type: picture, callback function: (none) */
+#define  Controls_Esc_Pic                 27      /* control type: picture, callback function: (none) */
+#define  Controls_CloseControls           28      /* control type: command, callback function: ResumeGame */
+#define  Controls_M_Key_Pic               29      /* control type: picture, callback function: (none) */
 
 #define  Game_Panel                       2
 #define  Game_Panel_CANVAS                2       /* control type: canvas, callback function: (none) */
@@ -48,8 +51,19 @@
 #define  Menu_Panel_Start_Game            2       /* control type: command, callback function: Start_Game */
 #define  Menu_Panel_Controls_Button       3       /* control type: command, callback function: Show_Controls */
 #define  Menu_Panel_QUITBUTTON            4       /* control type: command, callback function: QuitCallback */
+#define  Menu_Panel_MuteBUTTON            5       /* control type: pictButton, callback function: Mute_Callback */
+#define  Menu_Panel_Volume_String2        6       /* control type: string, callback function: (none) */
+#define  Menu_Panel_NUMERICSLIDE          7       /* control type: scale, callback function: ChangeVolume */
 
-#define  WMP_Panel                        4
+#define  OptionsScr                       4
+#define  OptionsScr_Resume_Button         2       /* control type: command, callback function: ResumeGame */
+#define  OptionsScr_Review_Controls       3       /* control type: command, callback function: Show_Controls */
+#define  OptionsScr_QUITBUTTON3           4       /* control type: command, callback function: QuitCallback */
+#define  OptionsScr_MuteBUTTON2           5       /* control type: pictButton, callback function: Mute_Callback */
+#define  OptionsScr_Volume_String         6       /* control type: string, callback function: (none) */
+#define  OptionsScr_NUMERICSLIDE          7       /* control type: scale, callback function: ChangeVolume */
+
+#define  WMP_Panel                        5
 #define  WMP_Panel_WINDOWSMEDIAPLAYER     2       /* control type: activeX, callback function: (none) */
 
 
@@ -66,8 +80,11 @@
      /* Callback Prototypes: */
 
 int  CVICALLBACK Back_To_Main(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
+int  CVICALLBACK ChangeVolume(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
+int  CVICALLBACK Mute_Callback(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK MyTimer(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK QuitCallback(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
+int  CVICALLBACK ResumeGame(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK Show_Controls(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK Start_Game(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 

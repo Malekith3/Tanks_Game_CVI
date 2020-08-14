@@ -18,11 +18,12 @@
 //==============================================================================
 // Include files
 
-#include "cvidef.h"
+#include "ActiveX_WMP.h"
 //==============================================================================
 // Constants
 #define ThemeSong "Sounds\\ha_ha_youre_dead_lyrics_green_day.mp3"
 #define ShootingSFX "Sounds\\Tank_Shooting.mp3"
+#define InitialVolume 50
 //==============================================================================
 // Types
 
@@ -36,6 +37,8 @@ void Create_WMP_Handle ();
 void PlaySound(char* path);		//plays a sound effect specified by path
 void StopSound();				//stops all sound
 void SetVolume(long volume);
+void ToggleMute();				//mutes\unmutes sound
+
 
 #ifdef __cplusplus
     }

@@ -1,3 +1,5 @@
+#include <userint.h>
+
 //==============================================================================
 //
 // Title:		Sound.c
@@ -12,7 +14,6 @@
 // Include files
 
 #include "Sound.h"
-#include "ActiveX_WMP.h"
 #include "Tank_Game.h"
 //==============================================================================
 // Constants
@@ -23,6 +24,7 @@
 //==============================================================================
 // Static global variables
 static CAObjHandle WMP_Handle;
+static VBOOL mute;
 //==============================================================================
 // Static functions
 
@@ -39,7 +41,11 @@ void Create_WMP_Handle ()
 
 void PlaySound(char* path)
 {
+	
+	//WMPLib_IWMPSettingsGetmute (WMP_Handle, NULL, &mute);
+	//if(mute==VFALSE)
 	WMPLib_IWMPPlayer4SetURL (WMP_Handle, NULL, path);
+
 }
 
 void StopSound()
@@ -51,4 +57,18 @@ void SetVolume(long volume)
 {
 	WMPLib_IWMPSettingsSetvolume (WMP_Handle, NULL, volume);
 }
+
+void ToggleMute()			//mutes/unmutes the sound
+{
+	
+	WMPLib_IWMPSettingsGetmute (WMP_Handle, NULL, &mute);
+	mute=!mute;
+	WMPLib_IWMPSettingsSetmute (WMP_Handle, NULL,mute);
+	
+}
+
+
+
+
+
 
