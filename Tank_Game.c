@@ -13,8 +13,9 @@
 ///////////////////////////Functions/////////////////////
 void InitializeTanks();
 int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsigned int* lParam,void* callbackData);
+//--------------------------------------------------------------------------------------------------------------------
 int menuPanel,gamePanel,controlsPanel,wmp_Panel,optionsPanel;
-static int turn,pause=0;
+static int turn,pause;
 double velocity;
 static PROJECTILE* projectile;
 TANK* tanks[2];
@@ -41,8 +42,7 @@ int main (int argc, char *argv[])
 							VAL_MODE_IN_QUEUE, NULL, &postinghandle);
 	InstallWinMsgCallback (gamePanel, WM_KEYDOWN, KeyupCallback,
 							VAL_MODE_IN_QUEUE, NULL, &postinghandle);
-	InstallWinMsgCallback (optionsPanel, WM_KEYDOWN, KeyupCallback,
-							VAL_MODE_IN_QUEUE, NULL, &postinghandle);	//so ESC wiil work for options menu as well(need to be checked later)
+	InstallWinMsgCallback (optionsPanel, WM_KEYDOWN, KeyupCallback,VAL_MODE_IN_QUEUE, NULL, &postinghandle);	//so ESC wiil work for options menu as well(need to be checked later)
 	InitializeTanks();
 	DisplayPanel (menuPanel);
 
@@ -124,46 +124,47 @@ int CVICALLBACK Back_To_Main (int panel, int control, int event,
 int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsigned int* lParam, void* callbackData)
 {
 	
-switch ( message)	
-{
-	case WM_KEYUP:
+	switch ( message)	
+	{
+		case WM_KEYUP:
 		
-		switch(*wParam)
-		{
-			case VK_SPACE:		//space key
-				if(!pause)		//0 is unpaused
-				{
+			switch(*wParam)
+			{
+				case VK_SPACE:		//space key
+					if(!pause)		//0 is unpaused
+					{
 				
-					if(!turn)
-					{
-						turn = First_Tank_Fire;
-						Fire_Projectile(projectile,tanks[0]);
-						SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
+						if(!turn)
+						{
+							turn = First_Tank_Fire;
+							Fire_Projectile(projectile,tanks[0]);
+							SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
 					
-					}
-					else
-					{
-						turn = Second_Tank_Fire;
-						Fire_Projectile(projectile,tanks[1]);
-						SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
-					}
+						}
+						else
+						{
+							turn = Second_Tank_Fire;
+							Fire_Projectile(projectile,tanks[1]);
+							SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
+						}
 					turn=!turn;
 					velocity = 0.00;
-				}
+					}
 				break;
-		}
+			}
+			break;
+	
+		case WM_KEYDOWN:
 		
-	case WM_KEYDOWN:
-		
-		switch (*wParam)
-		{
+			switch (*wParam)
+			{
 
-			case VK_SPACE:		//space Key 
-				if(!pause)
-					velocity+=5.00;	// When you hold space key velocity will increase 
-				break;
+				case VK_SPACE:		//space Key 
+					if(!pause)
+						velocity+=5.00;	// When you hold space key velocity will increase 
+					break;
 				
-			case VK_ESCAPE:								//Esc KEY
+				case VK_ESCAPE:								//Esc KEY
 					pause=!pause;
 					if(pause)						//the game has paused
 						DisplayPanel(optionsPanel);	//show options menu
@@ -171,28 +172,31 @@ switch ( message)
 						HidePanel(optionsPanel);
 					break;
 					
-			case 0x57:								//'w' Windows Virtual Key Code(it is not case-sensitive of course because it is the same key)
+				case 0x57:								//'w' Windows Virtual Key Code(it is not case-sensitive of course because it is the same key)
 					if(!turn&&!pause)						//active only at the turn of the left tank and when unpaused
 					{
 						tanks[0]->UpperBarrel(tanks[0]);
 						printf("%lf\n",tanks[0]->angle);	//garbage
 					}
 					break;
-			case 0x53:							//'s' Windows Virtual Key Code
+					
+				case 0x53:							//'s' Windows Virtual Key Code
 					if(!turn&&!pause)
 					{
 						tanks[0]->LowerBarrel(tanks[0]);
 						printf("%lf\n",tanks[0]->angle);	//garbage
 					}
 					break;
-		    case 0x41:							//'a' Windows Virtual Key Code
+					
+		    	case 0x41:							//'a' Windows Virtual Key Code
 					if(!turn&&!pause)
 					{
 						tanks[0]->Move_NegX(tanks[0]);
 						tanks[0]->Draw_Tank(tanks[0]);
 					}
 					break;
-			case 0x44:							//'d' Windows Virtual Key Code
+					
+				case 0x44:							//'d' Windows Virtual Key Code
 					if(!turn&&!pause)
 					{
 						tanks[0]->Move_PosX(tanks[0]);
@@ -200,28 +204,31 @@ switch ( message)
 					}
 					break;
 							
-			case 0x26:								//Arrow Up Vkey
+				case 0x26:								//Arrow Up Vkey
 					if(turn&&!pause)
 					{
 						tanks[1]->UpperBarrel(tanks[1]);
 						printf("%lf\n",tanks[1]->angle);	//garbage
 					}
 					break;
-			case 0x28: 							//Arrow Down Vkey
+					
+				case 0x28: 							//Arrow Down Vkey
 					if(turn&&!pause)
 					{
 						tanks[1]->LowerBarrel(tanks[1]);
 						printf("%lf\n",tanks[1]->angle);	//garbage
 					}
 					break;
-			case 0x25:								//Arrow Left Vkey
+					
+				case 0x25:								//Arrow Left Vkey
 					if(turn&&!pause)
 					{
 						tanks[1]->Move_NegX(tanks[1]);
 						tanks[1]->Draw_Tank(tanks[1]);
 					}
 					break;
-			case 0x27:								//Arrow Right Vkey
+					
+				case 0x27:								//Arrow Right Vkey
 					if(turn&&!pause)
 					{
 						tanks[1]->Move_PosX(tanks[1]);
@@ -229,12 +236,15 @@ switch ( message)
 					}
 					break;
 					
-			/*case 0x4D:								//'M' key(need to figure out what's wrong...)
-				ToggleMute();
-				break;*/
+				case 0x4D:								//'M' key
+					ToggleMute();
+					break;
 			
-		}
-}
+			}
+		break;
+	
+	
+	}
 	return 0;
 }
 int CVICALLBACK MyTimer (int panel, int control, int event,
@@ -276,7 +286,7 @@ int CVICALLBACK ResumeGame (int panel, int control, int event,
 {
 	switch (event)
 	{
-		case EVENT_COMMIT:
+		case EVENT_LEFT_CLICK:
 			pause=0;					//unpause the game
 			HidePanel(optionsPanel);
 			HidePanel(controlsPanel);	//show only game panel
@@ -296,7 +306,7 @@ int CVICALLBACK ChangeVolume (int panel, int control, int event,
 			GetPanelAttribute (menuPanel, ATTR_VISIBLE, &visible);
 			if(visible)														//user wants to change volume from main panel
 				GetCtrlVal (menuPanel, Menu_Panel_NUMERICSLIDE, &volume);
-			else															//user wants to change vokume from optopms menu							
+			else															//user wants to change vokume from options menu							
 				GetCtrlVal (optionsPanel, OptionsScr_NUMERICSLIDE, &volume);
 			
 			SetVolume(volume);
