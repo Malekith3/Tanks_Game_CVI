@@ -11,11 +11,13 @@
 
 
 ///////////////////////////Functions/////////////////////
-void InitializeTanks();
+void InitializeGame();
+void DiscardAll();
+void RefreshCanvas();
 int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsigned int* lParam,void* callbackData);
 //--------------------------------------------------------------------------------------------------------------------
-int menuPanel,gamePanel,controlsPanel,wmp_Panel,optionsPanel;
-static int turn,pause;
+int menuPanel,gamePanel,controlsPanel,wmp_Panel,optionsPanel,gameOverPanel;
+static int turn,pause,gameOver;
 double velocity;
 static PROJECTILE* projectile;
 TANK* tanks[2];
@@ -38,12 +40,14 @@ int main (int argc, char *argv[])
 		return -1;
 	if ((optionsPanel = LoadPanel (0, "Tank_Game.uir", OptionsScr)) < 0)
 		return -1;
+	if ((gameOverPanel = LoadPanel (0, "Tank_Game.uir", GameOver)) < 0)
+		return -1;
 	InstallWinMsgCallback (gamePanel, WM_KEYUP, KeyupCallback,
 							VAL_MODE_IN_QUEUE, NULL, &postinghandle);
 	InstallWinMsgCallback (gamePanel, WM_KEYDOWN, KeyupCallback,
 							VAL_MODE_IN_QUEUE, NULL, &postinghandle);
 	InstallWinMsgCallback (optionsPanel, WM_KEYDOWN, KeyupCallback,VAL_MODE_IN_QUEUE, NULL, &postinghandle);	//so ESC wiil work for options menu as well(need to be checked later)
-	InitializeTanks();
+	InitializeGame();
 	DisplayPanel (menuPanel);
 
 	//------------------------Sound Configuration---------------------------------------------
@@ -57,10 +61,7 @@ int main (int argc, char *argv[])
 //---------------------------------------------------------------------------------------------
 
 	RunUserInterface ();
-	DiscardPanel (menuPanel);
-	DiscardPanel (gamePanel);
-	DiscardPanel (controlsPanel);
-	DiscardPanel (wmp_Panel);
+	DiscardAll();
 	return 0;
 }
 
@@ -71,11 +72,12 @@ int CVICALLBACK Start_Game (int panel, int control, int event,
 	switch (event)
 	{
 		case EVENT_COMMIT:
+			InitializeGame();
 			StopSound();
-			HidePanel(menuPanel);					
+			HidePanel(menuPanel);
+			HidePanel(gameOverPanel);
 			DisplayPanel(gamePanel);
-			for(int i=0;i<2;i++)
-				tanks[i]->Draw_Tank(tanks[i]);
+			RefreshCanvas();
 			break;
 	}
 	return 0;
@@ -131,21 +133,53 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 			switch(*wParam)
 			{
 				case VK_SPACE:		//space key
-					if(!pause)		//0 is unpaused
+					if(!pause&&!gameOver)		//0 is unpaused
 					{
 				
 						if(!turn)
 						{
 							turn = First_Tank_Fire;
 							Fire_Projectile(projectile,tanks[0]);
+							//------------Need to be under Collision Detection-------------------
+							tanks[1]->BeenHit(tanks[1]);
+							RefreshCanvas();
+							if(tanks[1]->health!=0)
+								tanks[1]->DrawHealthBar(tanks[1]);
+							else		//tank is dead
+							{
+								//explotion should be here			
+								gameOver=1;
+								HidePanel(gamePanel);
+								DisplayPanel(gameOverPanel);
+								SetCtrlVal (gameOverPanel, GameOver_Tank_Won_String, "Left Tank won!");
+							}
+								
+							
+							//-------------------------------------------------------------------
 							SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
-					
 						}
+						
 						else
 						{
 							turn = Second_Tank_Fire;
 							Fire_Projectile(projectile,tanks[1]);
-							SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
+							//------------Need to be under Collision Detection-------------------
+							tanks[0]->BeenHit(tanks[0]);
+							RefreshCanvas();
+							if(tanks[0]->health!=0)
+								tanks[0]->DrawHealthBar(tanks[0]);
+							else		//tank is dead
+							{
+								//explotion should be here
+								gameOver=1;
+								HidePanel(gamePanel);
+								DisplayPanel(gameOverPanel);
+								SetCtrlVal (gameOverPanel, GameOver_Tank_Won_String, "Right Tank won!");
+							}
+								
+							
+							//-------------------------------------------------------------------
+							SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);	
 						}
 					turn=!turn;
 					velocity = 0.00;
@@ -160,20 +194,23 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 			{
 
 				case VK_SPACE:		//space Key 
-					if(!pause)
+					if(!pause&&!gameOver)
 						velocity+=5.00;	// When you hold space key velocity will increase 
 					break;
 				
 				case VK_ESCAPE:								//Esc KEY
-					pause=!pause;
-					if(pause)						//the game has paused
-						DisplayPanel(optionsPanel);	//show options menu
-					else							//unpause the game
-						HidePanel(optionsPanel);
+					if(!gameOver)
+					{
+						pause=!pause;
+						if(pause)						//the game has paused
+							DisplayPanel(optionsPanel);	//show options menu
+						else							//unpause the game
+							HidePanel(optionsPanel);
+					}
 					break;
 					
 				case 0x57:								//'w' Windows Virtual Key Code(it is not case-sensitive of course because it is the same key)
-					if(!turn&&!pause)						//active only at the turn of the left tank and when unpaused
+					if(!turn&&!pause&&!gameOver)		//active only at the turn of the left tank and when unpaused and when game is not over
 					{
 						tanks[0]->UpperBarrel(tanks[0]);
 						printf("%lf\n",tanks[0]->angle);	//garbage
@@ -181,7 +218,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					break;
 					
 				case 0x53:							//'s' Windows Virtual Key Code
-					if(!turn&&!pause)
+					if(!turn&&!pause&&!gameOver)
 					{
 						tanks[0]->LowerBarrel(tanks[0]);
 						printf("%lf\n",tanks[0]->angle);	//garbage
@@ -189,23 +226,25 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					break;
 					
 		    	case 0x41:							//'a' Windows Virtual Key Code
-					if(!turn&&!pause)
+					if(!turn&&!pause&&!gameOver)
 					{
 						tanks[0]->Move_NegX(tanks[0]);
 						tanks[0]->Draw_Tank(tanks[0]);
+						tanks[0]->DrawHealthBar(tanks[0]);		//so the health bar will move with the tank
 					}
 					break;
 					
 				case 0x44:							//'d' Windows Virtual Key Code
-					if(!turn&&!pause)
+					if(!turn&&!pause&&!gameOver)
 					{
 						tanks[0]->Move_PosX(tanks[0]);
 						tanks[0]->Draw_Tank(tanks[0]);
+						tanks[0]->DrawHealthBar(tanks[0]);
 					}
 					break;
 							
 				case 0x26:								//Arrow Up Vkey
-					if(turn&&!pause)
+					if(turn&&!pause&&!gameOver)
 					{
 						tanks[1]->UpperBarrel(tanks[1]);
 						printf("%lf\n",tanks[1]->angle);	//garbage
@@ -213,7 +252,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					break;
 					
 				case 0x28: 							//Arrow Down Vkey
-					if(turn&&!pause)
+					if(turn&&!pause&&!gameOver)
 					{
 						tanks[1]->LowerBarrel(tanks[1]);
 						printf("%lf\n",tanks[1]->angle);	//garbage
@@ -221,23 +260,26 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					break;
 					
 				case 0x25:								//Arrow Left Vkey
-					if(turn&&!pause)
+					if(turn&&!pause&&!gameOver)
 					{
 						tanks[1]->Move_NegX(tanks[1]);
 						tanks[1]->Draw_Tank(tanks[1]);
+						tanks[1]->DrawHealthBar(tanks[1]);
 					}
 					break;
 					
 				case 0x27:								//Arrow Right Vkey
-					if(turn&&!pause)
+					if(turn&&!pause&&!gameOver)
 					{
 						tanks[1]->Move_PosX(tanks[1]);
 						tanks[1]->Draw_Tank(tanks[1]);
+						tanks[1]->DrawHealthBar(tanks[1]);
 					}
 					break;
 					
 				case 0x4D:								//'M' key
-					ToggleMute();
+					if(!pause&&!gameOver)
+						ToggleMute();
 					break;
 			
 			}
@@ -258,8 +300,18 @@ int CVICALLBACK MyTimer (int panel, int control, int event,
 			cnt++;
 			if(cnt == 1000)
 			{
+				//-----------------for debugging only--------------------------------
+				/*if(!turn)
+					tanks[1]->BeenHit(tanks[1]);
+				else
+					tanks[0]->BeenHit(tanks[0]);*/			//need to figure out why cnt!=1000....
+				//--------------------------------------------------------------------
 				cnt=0;
+				RefreshCanvas();
 				SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
+				
+			
+				
 			
 			}
 			break;	
@@ -317,11 +369,41 @@ int CVICALLBACK ChangeVolume (int panel, int control, int event,
 
 
 
-void InitializeTanks()
+void InitializeGame()														//sets up all objects neccessary for the game
 {
-	tanks[0]=new_TANK(new_POSITION(10.00,500.00),50.00,new_Image("Assets//Tank.ico"));
-	tanks[1]=new_TANK(new_POSITION(740.00,500.00),130.00,new_Image("Assets//Tank2.ico"));
+	gameOver=0;
+	pause=0;
+	turn=0;
+	tanks[0]=new_TANK(new_POSITION(10.00,500.00),50.00,100,new_Image("Assets//Tank.ico"));
+	tanks[1]=new_TANK(new_POSITION(1100.00,500.00),130.00,100,new_Image("Assets//Tank2.ico"));
 	projectile = new_PROJECTILE(new_POSITION(0,0));
+}
+
+void DiscardAll()
+{
+	//-----------------Discard Panels------------------------------//
+	DiscardPanel (menuPanel);
+	DiscardPanel (gamePanel);
+	DiscardPanel (controlsPanel);
+	DiscardPanel (wmp_Panel);
+	DiscardPanel (optionsPanel);
+	DiscardPanel(gameOverPanel);
+	//--------------------------------------------------------------//
+	for(int i=0;i<2;i++)		//Discard tanks
+		free(tanks[i]);
+	free(projectile);			//Discrad projectile
+	
+}
+
+void RefreshCanvas()
+{
+	CanvasClear(gamePanel,Game_Panel_CANVAS,VAL_ENTIRE_OBJECT);
+	for(int i=0;i<2;i++)					//Redraw the tanks and their health bars
+	{
+		tanks[i]->Draw_Tank(tanks[i]);
+		tanks[i]->DrawHealthBar(tanks[i]);
+	}
+	
 }
 
 

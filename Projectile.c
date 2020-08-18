@@ -59,6 +59,7 @@ void Draw_Projectile(PROJECTILE* projectile)
 {
 	
 	CalclTrace(projectile->position);
+	SetCtrlAttribute (gamePanel, Game_Panel_CANVAS, ATTR_PEN_COLOR, VAL_BLACK);
 	CanvasStartBatchDraw (gamePanel, Game_Panel_CANVAS);
 	CanvasDrawRect (gamePanel, Game_Panel_CANVAS,MakeRect(projectile->position->y,projectile->position->x,5,5), VAL_DRAW_FRAME);
 	CanvasEndBatchDraw (gamePanel, Game_Panel_CANVAS );

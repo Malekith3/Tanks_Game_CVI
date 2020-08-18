@@ -47,7 +47,12 @@
 #define  Game_Panel_CANVAS                2       /* control type: canvas, callback function: (none) */
 #define  Game_Panel_TIMER                 3       /* control type: timer, callback function: MyTimer */
 
-#define  Menu_Panel                       3
+#define  GameOver                         3
+#define  GameOver_New_Game_Button         2       /* control type: command, callback function: Start_Game */
+#define  GameOver_QUITBUTTON4             3       /* control type: command, callback function: QuitCallback */
+#define  GameOver_Tank_Won_String         4       /* control type: string, callback function: (none) */
+
+#define  Menu_Panel                       4
 #define  Menu_Panel_Start_Game            2       /* control type: command, callback function: Start_Game */
 #define  Menu_Panel_Controls_Button       3       /* control type: command, callback function: Show_Controls */
 #define  Menu_Panel_QUITBUTTON            4       /* control type: command, callback function: QuitCallback */
@@ -55,7 +60,7 @@
 #define  Menu_Panel_Volume_String2        6       /* control type: string, callback function: (none) */
 #define  Menu_Panel_NUMERICSLIDE          7       /* control type: scale, callback function: ChangeVolume */
 
-#define  OptionsScr                       4
+#define  OptionsScr                       5
 #define  OptionsScr_Resume_Button         2       /* control type: command, callback function: ResumeGame */
 #define  OptionsScr_Review_Controls       3       /* control type: command, callback function: Show_Controls */
 #define  OptionsScr_QUITBUTTON3           4       /* control type: command, callback function: QuitCallback */
@@ -63,7 +68,7 @@
 #define  OptionsScr_Volume_String         6       /* control type: string, callback function: (none) */
 #define  OptionsScr_NUMERICSLIDE          7       /* control type: scale, callback function: ChangeVolume */
 
-#define  WMP_Panel                        5
+#define  WMP_Panel                        6
 #define  WMP_Panel_WINDOWSMEDIAPLAYER     2       /* control type: activeX, callback function: (none) */
 
 

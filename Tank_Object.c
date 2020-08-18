@@ -2,7 +2,7 @@
 #include <ansi_c.h>
 #include "Tank_Object.h"
 
-extern int gamePanel;
+
 
 POSITION* new_POSITION(double x,double y)
 {
@@ -13,18 +13,20 @@ POSITION* new_POSITION(double x,double y)
 	return position;
 }
 
-TANK* new_TANK(POSITION* position,double angle,int* image)
+TANK* new_TANK(POSITION* position,double angle,int health,int* image)
 {
 	TANK* tank=calloc(1,sizeof(TANK));
 	tank->position=position;
 	tank->angle=angle;
+	tank->health=health;
 	tank->image=image;
 	tank->Move_PosX=&Move_PosX;
 	tank->Move_NegX=&Move_NegX;
 	tank->LowerBarrel=&LowerBarrel;
 	tank->UpperBarrel=&UpperBarrel;
 	tank->Draw_Tank=&Draw_Tank;
-	
+	tank->BeenHit=&BeenHit;
+	tank->DrawHealthBar=&DrawHealthBar;
 	return tank;
 }
 int* new_Image(char* path)
@@ -58,5 +60,21 @@ void Draw_Tank(TANK* tank)
 	CanvasStartBatchDraw (gamePanel, Game_Panel_CANVAS);
 	CanvasDrawBitmap (gamePanel, Game_Panel_CANVAS, *(tank->image), VAL_ENTIRE_OBJECT, MakeRect (tank->position->y, tank->position->x, 150, 200));
 }
+
+void BeenHit(TANK* tank)
+{
+	tank->health-=10;
+}
+
+void DrawHealthBar(TANK* tank)
+{
+																			
+	SetCtrlAttribute (gamePanel, Game_Panel_CANVAS, ATTR_PEN_COLOR, VAL_RED);
+	SetCtrlAttribute (gamePanel, Game_Panel_CANVAS, ATTR_PEN_FILL_COLOR, VAL_RED);
+	CanvasDrawRect (gamePanel, Game_Panel_CANVAS, MakeRect((tank->position->y)+40,(tank->position->x)+40,10,tank->health), VAL_DRAW_FRAME_AND_INTERIOR);
+}
+
+
+
 
 
