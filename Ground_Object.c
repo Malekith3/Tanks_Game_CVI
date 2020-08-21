@@ -1,7 +1,7 @@
 //==============================================================================
 //
 // Title:		Ground_Object.c
-// Purpose:		A short description of the implementation.
+// Purpose:		Module for drawing Ground (Its not finale)
 //
 // Created on:	21/08/2020 at 9:03:48 by Alex Bordeaux.
 // Copyright:	Student. All Rights Reserved.
@@ -16,27 +16,6 @@
 #include "Ground_Object.h"
 #include "Tank_Game.h"
 
-//==============================================================================
-// Constants
-
-//==============================================================================
-// Types
-
-//==============================================================================
-// Static global variables
-
-//==============================================================================
-// Static functions
-
-//==============================================================================
-// Global variables
-
-//==============================================================================
-// Global functions
-
-/// HIFN  What does your function do?
-/// HIPAR x/What inputs does your function expect?
-/// HIRET What does your function return?
 GROUND* new_Ground()
 {
 	GROUND* ground=calloc(1,sizeof(GROUND));
