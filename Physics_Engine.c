@@ -20,7 +20,7 @@ const double GperFrame = 0.32; //What is G acceleration per frame (9.6/30 =0.32)
 // Static global variables
 static double velocityX;
 static double velocityY;
-static double airRessistence;
+static double Wind;
 //==============================================================================
 // Static functions
 static double CalcAirRessistence(double velocity); // internal function for air resistance calculation .
@@ -33,8 +33,8 @@ extern double velocity;
 
 static void Velocity_Normalization () 
 {
-	if(velocity > 150)
-		velocity=75;
+	if(velocity > 300)
+		velocity=150;
 	else 
 		velocity /= 2;
 }
@@ -44,7 +44,7 @@ void InitVelocety(TANK* tank)
 	Velocity_Normalization();
 	velocityX = velocity*cos(tank->angle * (Pi() / 180));
 	velocityY = velocity*sin(tank->angle * (Pi() / 180));
-	airRessistence = CalcAirRessistence(velocity);
+	Wind = Random (-1, 1);
 }
 
 static double CalcAirRessistence(double velocity){ return Random (-1, 1);}
@@ -53,7 +53,7 @@ void CalclTrace(POSITION* position)
 {
 	
 	velocityY= velocityY - GperFrame - (velocityY * 0.1) ;
-    velocityX -= (velocityX*0.1 + airRessistence);
+    velocityX -= (velocityX*0.05 + Wind);
 	position->x+= velocityX;
 	position->y-= velocityY;
 	// For debugging purposes 

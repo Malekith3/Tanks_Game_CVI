@@ -1,9 +1,9 @@
 //==============================================================================
 //
-// Title:		Projectile.c
+// Title:		Ground_Object.c
 // Purpose:		A short description of the implementation.
 //
-// Created on:	10/08/2020 at 8:48:35 by Alex Bordeaux.
+// Created on:	21/08/2020 at 9:03:48 by Alex Bordeaux.
 // Copyright:	Student. All Rights Reserved.
 //
 //==============================================================================
@@ -13,10 +13,9 @@
 
 #include <userint.h>
 #include <ansi_c.h>
-#include "Projectile.h"
-#include "Physics_Engine.h"
+#include "Ground_Object.h"
 #include "Tank_Game.h"
-#include "Sound.h"
+
 //==============================================================================
 // Constants
 
@@ -38,32 +37,26 @@
 /// HIFN  What does your function do?
 /// HIPAR x/What inputs does your function expect?
 /// HIRET What does your function return?
-PROJECTILE* new_PROJECTILE(POSITION* position)
+GROUND* new_Ground()
 {
-	PROJECTILE* projectile=calloc(1,sizeof(PROJECTILE));
-	projectile->position = position;
-	projectile->Draw_Projectile = &Draw_Projectile ; 
-	projectile->Fire_Projectile = &Fire_Projectile;
-	return projectile;
-
-
+	GROUND* ground=calloc(1,sizeof(GROUND));
+	ground->Draw_Ground=Draw_Ground;
+	return ground;
 }
-void Fire_Projectile(PROJECTILE* projectile , TANK* tank)
+
+void Draw_Ground(struct ground* self)
 {
-	PlaySound(ShootingSFX);
-	InitVelocety(tank);
-	projectile->position->x = tank->position->x +200;
-	projectile->position->y = tank->position->y +50;
-}
-void Draw_Projectile(PROJECTILE* projectile)
-{
-	CanvasClear(gamePanel,Game_Panel_CANVAS,MakeRect(projectile->position->y,projectile->position->x,5,5));
-	CalclTrace(projectile->position);
-	SetCtrlAttribute (gamePanel, Game_Panel_CANVAS, ATTR_PEN_COLOR, VAL_BLACK);
-	SetCtrlAttribute (gamePanel, Game_Panel_CANVAS, ATTR_PEN_FILL_COLOR, VAL_BLACK);
-	CanvasStartBatchDraw (gamePanel, Game_Panel_CANVAS);
-	CanvasDrawRect (gamePanel, Game_Panel_CANVAS,MakeRect(projectile->position->y,projectile->position->x,5,5), VAL_DRAW_FRAME_AND_INTERIOR);
-	CanvasEndBatchDraw (gamePanel, Game_Panel_CANVAS );
+	SetCtrlAttribute (gamePanel, Game_Panel_CANVAS, ATTR_PEN_COLOR, VAL_DK_GREEN);
+	SetCtrlAttribute (gamePanel, Game_Panel_CANVAS, ATTR_PEN_FILL_COLOR, VAL_DK_GREEN);
 	
+	CanvasStartBatchDraw (gamePanel, Game_Panel_CANVAS);
+	CanvasDrawRect (gamePanel, Game_Panel_CANVAS, MakeRect(600,0,500,1920), VAL_DRAW_FRAME_AND_INTERIOR);
+	CanvasDrawOval (gamePanel, Game_Panel_CANVAS, MakeRect(300,750,700,300), VAL_DRAW_FRAME_AND_INTERIOR);
+	SetCtrlAttribute (gamePanel, Game_Panel_CANVAS, ATTR_PEN_WIDTH, 200);
+	CanvasDrawLine (gamePanel, Game_Panel_CANVAS,MakePoint(700,700) ,MakePoint(850,310) );// line is starting at 600px
+	CanvasDrawLine (gamePanel, Game_Panel_CANVAS,MakePoint(1300,700) ,MakePoint(900,340) );// line is starting at 1300px
+	SetCtrlAttribute (gamePanel, Game_Panel_CANVAS, ATTR_PEN_WIDTH, 3);
+	
+	CanvasEndBatchDraw (gamePanel, Game_Panel_CANVAS );
 	
 }

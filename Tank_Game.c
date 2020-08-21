@@ -5,9 +5,9 @@
 #include "Tank_Object.h"
 #include <Windows.h>
 #include "toolbox.h"
-#include "ActiveX_WMP.h"
 #include "Sound.h"
 #include "Projectile.h"
+#include "Ground_Object.h"
 
 
 ///////////////////////////Functions/////////////////////
@@ -21,6 +21,7 @@ static int turn,pause,gameOver;
 double velocity;
 static PROJECTILE* projectile;
 TANK* tanks[2];
+GROUND* ground;
 static int postinghandle;
 enum status {First_Tank_Fire,Second_Tank_Fire,No_One_Fire};
 enum status turn;
@@ -47,7 +48,6 @@ int main (int argc, char *argv[])
 	InstallWinMsgCallback (gamePanel, WM_KEYDOWN, KeyupCallback,
 							VAL_MODE_IN_QUEUE, NULL, &postinghandle);
 	InstallWinMsgCallback (optionsPanel, WM_KEYDOWN, KeyupCallback,VAL_MODE_IN_QUEUE, NULL, &postinghandle);	//so ESC wiil work for options menu as well(need to be checked later)
-	InitializeGame();
 	DisplayPanel (menuPanel);
 
 	//------------------------Sound Configuration---------------------------------------------
@@ -59,7 +59,7 @@ int main (int argc, char *argv[])
 	SetCtrlVal (optionsPanel, OptionsScr_NUMERICSLIDE, InitialVolume);
 	
 //---------------------------------------------------------------------------------------------
-
+	
 	RunUserInterface ();
 	DiscardAll();
 	return 0;
@@ -73,11 +73,13 @@ int CVICALLBACK Start_Game (int panel, int control, int event,
 	{
 		case EVENT_COMMIT:
 			InitializeGame();
+			ground->Draw_Ground(ground);
 			StopSound();
 			HidePanel(menuPanel);
 			HidePanel(gameOverPanel);
 			DisplayPanel(gamePanel);
 			RefreshCanvas();
+			
 			break;
 	}
 	return 0;
@@ -195,7 +197,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 
 				case VK_SPACE:		//space Key 
 					if(!pause&&!gameOver)
-						velocity+=5.00;	// When you hold space key velocity will increase 
+						velocity+=10.00;	// When you hold space key velocity will increase 
 					break;
 				
 				case VK_ESCAPE:								//Esc KEY
@@ -246,7 +248,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 				case 0x26:								//Arrow Up Vkey
 					if(turn&&!pause&&!gameOver)
 					{
-						tanks[1]->UpperBarrel(tanks[1]);
+						tanks[1]->LowerBarrel(tanks[1]);
 						printf("%lf\n",tanks[1]->angle);	//garbage
 					}
 					break;
@@ -254,7 +256,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 				case 0x28: 							//Arrow Down Vkey
 					if(turn&&!pause&&!gameOver)
 					{
-						tanks[1]->LowerBarrel(tanks[1]);
+						tanks[1]->UpperBarrel(tanks[1]);
 						printf("%lf\n",tanks[1]->angle);	//garbage
 					}
 					break;
@@ -296,27 +298,8 @@ int CVICALLBACK MyTimer (int panel, int control, int event,
 	switch (event)
 	{
 		case EVENT_TIMER_TICK:
-			Draw_Projectile(projectile);
-			cnt++;
-			if(cnt == 1000)
-			{
-				//-----------------for debugging only--------------------------------
-				/*if(!turn)
-					tanks[1]->BeenHit(tanks[1]);
-				else
-					tanks[0]->BeenHit(tanks[0]);*/			//need to figure out why cnt!=1000....
-				//--------------------------------------------------------------------
-				cnt=0;
-				RefreshCanvas();
-				SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
-				
 			
-				
-			
-			}
-			break;	
-			
-						
+			Draw_Projectile(projectile);					
 	}
 	return 0;
 }
@@ -375,8 +358,9 @@ void InitializeGame()														//sets up all objects neccessary for the game
 	pause=0;
 	turn=0;
 	tanks[0]=new_TANK(new_POSITION(10.00,500.00),50.00,100,new_Image("Assets//Tank.ico"));
-	tanks[1]=new_TANK(new_POSITION(1100.00,500.00),130.00,100,new_Image("Assets//Tank2.ico"));
-	projectile = new_PROJECTILE(new_POSITION(0,0));
+	tanks[1]=new_TANK(new_POSITION(1700.00,500.00),130.00,100,new_Image("Assets//Tank2.ico"));
+	projectile = new_PROJECTILE(new_POSITION(2000,2000));
+	ground = new_Ground();
 }
 
 void DiscardAll()
@@ -402,6 +386,7 @@ void RefreshCanvas()
 	{
 		tanks[i]->Draw_Tank(tanks[i]);
 		tanks[i]->DrawHealthBar(tanks[i]);
+		
 	}
 	
 }

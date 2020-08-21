@@ -1,15 +1,15 @@
 //==============================================================================
 //
-// Title:		Sound.h
-// Purpose:		A short description of the interface.
+// Title:		Ground_Object.h
+// Purpose:		Interface for creating and drawing ground
 //
-// Created on:	12/08/2020 at 19:59:41 by Barack Samuni.
-// Copyright:	Afeka academic college of engineering. All Rights Reserved.
+// Created on:	21/08/2020 at 9:03:48 by Alex Bordeaux.
+// Copyright:	Student. All Rights Reserved.
 //
 //==============================================================================
 
-#ifndef __Sound_H__
-#define __Sound_H__
+#ifndef __Ground_Object_H__
+#define __Ground_Object_H__
 
 #ifdef __cplusplus
     extern "C" {
@@ -18,30 +18,29 @@
 //==============================================================================
 // Include files
 
-#include "ActiveX_WMP.h"
+#include "cvidef.h"
+
 //==============================================================================
 // Constants
-#define ThemeSong "Sounds\\ha_ha_youre_dead_lyrics_green_day.mp3"
-#define ShootingSFX "Sounds\\Tank_Shooting.mp3"
-#define InitialVolume 0
+
 //==============================================================================
 // Types
+ typedef struct ground
+{
+	void (*Draw_Ground)(struct ground* self); // Drawing ground on canvas 
+	
+}GROUND;
 
 //==============================================================================
 // External variables
-extern int wmp_Panel;
+	extern int gamePanel;
 //==============================================================================
 // Global functions
-
-void Create_WMP_Handle ();
-void PlaySound(char* path);		//plays a sound effect specified by path
-void StopSound();				//stops all sound
-void SetVolume(long volume);
-void ToggleMute();				//mutes\unmutes sound
-
+void Draw_Ground(struct ground* self); // drawing ground on canvas
+GROUND* new_Ground(); // creating ground object
 
 #ifdef __cplusplus
     }
 #endif
 
-#endif  /* ndef __Sound_H__ */
+#endif  /* ndef __Ground_Object_H__ */

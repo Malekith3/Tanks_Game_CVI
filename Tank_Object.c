@@ -59,6 +59,8 @@ void Draw_Tank(TANK* tank)
 {
 	CanvasStartBatchDraw (gamePanel, Game_Panel_CANVAS);
 	CanvasDrawBitmap (gamePanel, Game_Panel_CANVAS, *(tank->image), VAL_ENTIRE_OBJECT, MakeRect (tank->position->y, tank->position->x, 150, 200));
+	ground->Draw_Ground(ground);
+	CanvasEndBatchDraw (gamePanel, Game_Panel_CANVAS );
 }
 
 void BeenHit(TANK* tank)

@@ -1,6 +1,7 @@
 #ifndef Tank_Object_h
 #define Tank_Object_h
 
+#include "Ground_Object.h"
 //------------------------------Objects definition------------------------------------------//
 typedef struct position												//includes position in cartesian coordinates
 {
@@ -27,7 +28,7 @@ typedef struct tank													//defines a Tank object
 
 //--------------------External variables-------------------------------------------------------//
 extern int gamePanel;
-
+extern GROUND* ground;
 
 //----------------------------Functions declaration------------------------------------------//
 
