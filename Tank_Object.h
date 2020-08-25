@@ -2,6 +2,7 @@
 #define Tank_Object_h
 
 #include "Ground_Object.h"
+
 //------------------------------Objects definition------------------------------------------//
 typedef struct position												//includes position in cartesian coordinates
 {
@@ -12,10 +13,11 @@ typedef struct position												//includes position in cartesian coordinates
 
 typedef struct tank													//defines a Tank object
 {
-	POSITION* position;												//position of the tank in cartesian coordinates
+	POSITION* position;                                             //position of the tank in cartesian coordinates
+	
 	double angle;													//initial angle for the missle
 	int health;														//the health of the tank(will be scaled from 0-100)
-	int* image;														//pointer which contains the path of the .png image of the tank
+	int* image;                                                     //pointer which contains the path of the .png image of the tank
 	void (*Move_PosX)(struct tank* self);							//pointer to function(which will function as a method implemented in oop)
 	void (*Move_NegX)(struct tank* self);
 	void (*UpperBarrel)(struct tank* self);	
@@ -29,7 +31,9 @@ typedef struct tank													//defines a Tank object
 //--------------------External variables-------------------------------------------------------//
 extern int gamePanel;
 extern GROUND* ground;
-
+//----------------------------Static Functions-----------------------------------------------//
+static void AngleCheck(TANK* tank);
+static void PositionCheck(TANK* tank);
 //----------------------------Functions declaration------------------------------------------//
 
 POSITION* new_POSITION(double x,double y);							//POSITION constructor

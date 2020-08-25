@@ -17,6 +17,7 @@
 #include "Physics_Engine.h"
 #include "Tank_Game.h"
 #include "Sound.h"
+#include "Collison_Module.h"
 //==============================================================================
 // Constants
 
@@ -28,7 +29,7 @@
 
 //==============================================================================
 // Static functions
-
+static void CheckCollisionForProjectile(PROJECTILE* projectile);
 //==============================================================================
 // Global variables
 
@@ -57,13 +58,13 @@ void Fire_Projectile(PROJECTILE* projectile , TANK* tank)
 }
 void Draw_Projectile(PROJECTILE* projectile)
 {
+	//CanvasUpdate(gamePanel,Game_Panel_CANVAS,MakeRect(projectile->position->y,projectile->position->x,5,5));
 	CanvasClear(gamePanel,Game_Panel_CANVAS,MakeRect(projectile->position->y,projectile->position->x,5,5));
 	CalclTrace(projectile->position);
+	DetectCollision(projectile);
 	SetCtrlAttribute (gamePanel, Game_Panel_CANVAS, ATTR_PEN_COLOR, VAL_BLACK);
 	SetCtrlAttribute (gamePanel, Game_Panel_CANVAS, ATTR_PEN_FILL_COLOR, VAL_BLACK);
-	CanvasStartBatchDraw (gamePanel, Game_Panel_CANVAS);
 	CanvasDrawRect (gamePanel, Game_Panel_CANVAS,MakeRect(projectile->position->y,projectile->position->x,5,5), VAL_DRAW_FRAME_AND_INTERIOR);
-	CanvasEndBatchDraw (gamePanel, Game_Panel_CANVAS );
 	
 	
 }

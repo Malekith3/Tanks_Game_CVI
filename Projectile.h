@@ -43,11 +43,14 @@ typedef struct projectile
 // External variables
 extern TANK* tanks[2];
 extern int gamePanel;
+extern double velocityX;
+extern double velocityY;
 //==============================================================================
 // Global functions
 PROJECTILE* new_PROJECTILE(POSITION* position); // PROJECTILE constructor
 void Draw_Projectile(PROJECTILE* projectile); 
 void Fire_Projectile(PROJECTILE* projectile, TANK* tank);
+int DrawAllScene();
 #ifdef __cplusplus
     }
 #endif

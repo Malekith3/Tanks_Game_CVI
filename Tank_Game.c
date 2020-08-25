@@ -14,11 +14,15 @@
 void InitializeGame();
 void DiscardAll();
 void RefreshCanvas();
+int DrawAllScene();
 int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsigned int* lParam,void* callbackData);
 //--------------------------------------------------------------------------------------------------------------------
+CmtThreadPoolHandle MY_THREAD_POOL;
+CmtThreadPoolHandle RenderingID;
 int menuPanel,gamePanel,controlsPanel,wmp_Panel,optionsPanel,gameOverPanel;
 static int turn,pause,gameOver;
-double velocity;
+double velocity ,windPower;
+static char windText[20] ;
 static PROJECTILE* projectile;
 TANK* tanks[2];
 GROUND* ground;
@@ -49,7 +53,7 @@ int main (int argc, char *argv[])
 							VAL_MODE_IN_QUEUE, NULL, &postinghandle);
 	InstallWinMsgCallback (optionsPanel, WM_KEYDOWN, KeyupCallback,VAL_MODE_IN_QUEUE, NULL, &postinghandle);	//so ESC wiil work for options menu as well(need to be checked later)
 	DisplayPanel (menuPanel);
-
+	CmtNewThreadPool (4, &MY_THREAD_POOL);
 	//------------------------Sound Configuration---------------------------------------------
 																						
 	Create_WMP_Handle();
@@ -73,12 +77,13 @@ int CVICALLBACK Start_Game (int panel, int control, int event,
 	{
 		case EVENT_COMMIT:
 			InitializeGame();
-			ground->Draw_Ground(ground);
+			
 			StopSound();
 			HidePanel(menuPanel);
 			HidePanel(gameOverPanel);
 			DisplayPanel(gamePanel);
-			RefreshCanvas();
+			windPower = Random(-0.50,0.50);
+			CmtScheduleThreadPoolFunction (MY_THREAD_POOL, DrawAllScene, NULL, &RenderingID);
 			
 			break;
 	}
@@ -92,7 +97,7 @@ int CVICALLBACK Show_Controls (int panel, int control, int event,
 	{
 		case EVENT_COMMIT:
 			HidePanel(menuPanel);					
-			DisplayPanel(controlsPanel);
+			DisplayPanel (controlsPanel);
 			break;
 	}
 	return 0;
@@ -106,7 +111,7 @@ int CVICALLBACK QuitCallback (int panel, int control, int event,
 	switch (event)
 	{
 		case EVENT_COMMIT:
-			if(GenericMessagePopup ("Quit Confirmation", "Are you sure you want to quit?", "Yes", "No", 0, 0, 0, 0, VAL_GENERIC_POPUP_BTN1, VAL_GENERIC_POPUP_BTN1, VAL_GENERIC_POPUP_BTN2)==VAL_GENERIC_POPUP_BTN1)	//Yes
+			if(GenericMessagePopup ("Quit Confirmation", "Are you sure you want to quit?", "Yes", "No", 0, 0, 0, 0, VAL_GENERIC_POPUP_BTN1, VAL_GENERIC_POPUP_BTN1, VAL_GENERIC_POPUP_BTN2)==VAL_GENERIC_POPUP_BTN1)//Yes
 						QuitUserInterface(0);
 			break;
 	}
@@ -143,8 +148,6 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 							turn = First_Tank_Fire;
 							Fire_Projectile(projectile,tanks[0]);
 							//------------Need to be under Collision Detection-------------------
-							tanks[1]->BeenHit(tanks[1]);
-							RefreshCanvas();
 							if(tanks[1]->health!=0)
 								tanks[1]->DrawHealthBar(tanks[1]);
 							else		//tank is dead
@@ -156,18 +159,16 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 								SetCtrlVal (gameOverPanel, GameOver_Tank_Won_String, "Left Tank won!");
 							}
 								
-							
+						}	
 							//-------------------------------------------------------------------
-							SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
-						}
 						
 						else
 						{
 							turn = Second_Tank_Fire;
 							Fire_Projectile(projectile,tanks[1]);
 							//------------Need to be under Collision Detection-------------------
-							tanks[0]->BeenHit(tanks[0]);
-							RefreshCanvas();
+							//tanks[0]->BeenHit(tanks[0]);
+							//RefreshCanvas();
 							if(tanks[0]->health!=0)
 								tanks[0]->DrawHealthBar(tanks[0]);
 							else		//tank is dead
@@ -181,10 +182,11 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 								
 							
 							//-------------------------------------------------------------------
-							SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);	
+								
 						}
 					turn=!turn;
 					velocity = 0.00;
+					windPower = Random(-0.50,0.50);
 					}
 				break;
 			}
@@ -197,7 +199,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 
 				case VK_SPACE:		//space Key 
 					if(!pause&&!gameOver)
-						velocity+=10.00;	// When you hold space key velocity will increase 
+						velocity+=5.00;	// When you hold space key velocity will increase 
 					break;
 				
 				case VK_ESCAPE:								//Esc KEY
@@ -215,7 +217,6 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					if(!turn&&!pause&&!gameOver)		//active only at the turn of the left tank and when unpaused and when game is not over
 					{
 						tanks[0]->UpperBarrel(tanks[0]);
-						printf("%lf\n",tanks[0]->angle);	//garbage
 					}
 					break;
 					
@@ -223,7 +224,6 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					if(!turn&&!pause&&!gameOver)
 					{
 						tanks[0]->LowerBarrel(tanks[0]);
-						printf("%lf\n",tanks[0]->angle);	//garbage
 					}
 					break;
 					
@@ -231,8 +231,9 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					if(!turn&&!pause&&!gameOver)
 					{
 						tanks[0]->Move_NegX(tanks[0]);
-						tanks[0]->Draw_Tank(tanks[0]);
-						tanks[0]->DrawHealthBar(tanks[0]);		//so the health bar will move with the tank
+						//tanks[0]->Draw_Tank(tanks[0]);
+						//tanks[0]->DrawHealthBar(tanks[0]);//so the health bar will move with the tank
+						DrawAllScene();
 					}
 					break;
 					
@@ -240,8 +241,9 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					if(!turn&&!pause&&!gameOver)
 					{
 						tanks[0]->Move_PosX(tanks[0]);
-						tanks[0]->Draw_Tank(tanks[0]);
-						tanks[0]->DrawHealthBar(tanks[0]);
+						//tanks[0]->Draw_Tank(tanks[0]);
+						//tanks[0]->DrawHealthBar(tanks[0]);
+						DrawAllScene();
 					}
 					break;
 							
@@ -249,7 +251,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					if(turn&&!pause&&!gameOver)
 					{
 						tanks[1]->LowerBarrel(tanks[1]);
-						printf("%lf\n",tanks[1]->angle);	//garbage
+						
 					}
 					break;
 					
@@ -257,7 +259,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					if(turn&&!pause&&!gameOver)
 					{
 						tanks[1]->UpperBarrel(tanks[1]);
-						printf("%lf\n",tanks[1]->angle);	//garbage
+						
 					}
 					break;
 					
@@ -265,8 +267,9 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					if(turn&&!pause&&!gameOver)
 					{
 						tanks[1]->Move_NegX(tanks[1]);
-						tanks[1]->Draw_Tank(tanks[1]);
-						tanks[1]->DrawHealthBar(tanks[1]);
+						//tanks[1]->Draw_Tank(tanks[1]);
+						//tanks[1]->DrawHealthBar(tanks[1]);
+						DrawAllScene();
 					}
 					break;
 					
@@ -274,8 +277,9 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					if(turn&&!pause&&!gameOver)
 					{
 						tanks[1]->Move_PosX(tanks[1]);
-						tanks[1]->Draw_Tank(tanks[1]);
-						tanks[1]->DrawHealthBar(tanks[1]);
+						//tanks[1]->Draw_Tank(tanks[1]);
+						//tanks[1]->DrawHealthBar(tanks[1]);
+						DrawAllScene();
 					}
 					break;
 					
@@ -298,8 +302,10 @@ int CVICALLBACK MyTimer (int panel, int control, int event,
 	switch (event)
 	{
 		case EVENT_TIMER_TICK:
+			Draw_Projectile(projectile);
 			
-			Draw_Projectile(projectile);					
+			
+			break;
 	}
 	return 0;
 }
@@ -357,15 +363,17 @@ void InitializeGame()														//sets up all objects neccessary for the game
 	gameOver=0;
 	pause=0;
 	turn=0;
-	tanks[0]=new_TANK(new_POSITION(10.00,500.00),50.00,100,new_Image("Assets//Tank.ico"));
-	tanks[1]=new_TANK(new_POSITION(1700.00,500.00),130.00,100,new_Image("Assets//Tank2.ico"));
+	tanks[0]=new_TANK(new_POSITION(10.00,390.00),50.00,100,new_Image("Assets//Animation//Tank_Left//Tank_Mouvement//01_Tank.png"));
+	tanks[1]=new_TANK(new_POSITION(1700.00,390.00),130.00,100,new_Image("Assets//Animation//Tank_Right//Tank_Mouvement//01_Tank.png"));
 	projectile = new_PROJECTILE(new_POSITION(2000,2000));
-	ground = new_Ground();
+	ground = new_Ground(new_Image("Assets//Animation//Ground//01_Ground.jpg"));
+	SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
 }
 
 void DiscardAll()
 {
 	//-----------------Discard Panels------------------------------//
+	CmtDiscardThreadPool (MY_THREAD_POOL);
 	DiscardPanel (menuPanel);
 	DiscardPanel (gamePanel);
 	DiscardPanel (controlsPanel);
@@ -390,7 +398,20 @@ void RefreshCanvas()
 	}
 	
 }
+int DrawAllScene()
+{
 
+	ground->Draw_Ground(ground);
+	for(int i=0;i<2;i++)					
+	{
+		tanks[i]->Draw_Tank(tanks[i]);
+		tanks[i]->DrawHealthBar(tanks[i]);
+	}
+	CanvasDefaultPen (gamePanel, Game_Panel_CANVAS);
+	sprintf(windText,"Wind : %f",windPower);
+	CanvasDrawTextAtPoint (gamePanel, Game_Panel_CANVAS, windText, VAL_APP_META_FONT, MakePoint(1850,50), VAL_CENTER);
+	return 0;
+}
 
 
 

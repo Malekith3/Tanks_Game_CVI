@@ -27,6 +27,7 @@
 // Types
  typedef struct ground
 {
+	int* image; 
 	void (*Draw_Ground)(struct ground* self); // Drawing ground on canvas 
 	
 }GROUND;

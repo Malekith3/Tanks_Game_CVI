@@ -37,35 +37,44 @@ int* new_Image(char* path)
 }
 void Move_PosX(TANK* tank)		//moving in the positive direction of x axis
 {
-	tank->position->x+=2;
+	
+	  tank->position->x+=2;
+	  PositionCheck(tank);
+	
 }
 
 void Move_NegX(TANK* tank)		//moving in the negative direction of x axis
 {
-	tank->position->x-=2;
+
+		tank->position->x-=2;
+		PositionCheck(tank);
 }
 
 void LowerBarrel(TANK* tank)
 {
-	tank->angle-=2;
+	
+		tank->angle-=6;
+		AngleCheck(tank);
+	
 }
 
 void UpperBarrel(TANK* tank)
 {
-	tank->angle+=2;
+	
+	tank->angle+=6;
+	AngleCheck(tank);
 }
 
 void Draw_Tank(TANK* tank)
 {
 	CanvasStartBatchDraw (gamePanel, Game_Panel_CANVAS);
 	CanvasDrawBitmap (gamePanel, Game_Panel_CANVAS, *(tank->image), VAL_ENTIRE_OBJECT, MakeRect (tank->position->y, tank->position->x, 150, 200));
-	ground->Draw_Ground(ground);
 	CanvasEndBatchDraw (gamePanel, Game_Panel_CANVAS );
 }
 
 void BeenHit(TANK* tank)
 {
-	tank->health-=10;
+	tank->health-=25;
 }
 
 void DrawHealthBar(TANK* tank)
@@ -75,8 +84,29 @@ void DrawHealthBar(TANK* tank)
 	SetCtrlAttribute (gamePanel, Game_Panel_CANVAS, ATTR_PEN_FILL_COLOR, VAL_RED);
 	CanvasDrawRect (gamePanel, Game_Panel_CANVAS, MakeRect((tank->position->y)+40,(tank->position->x)+40,10,tank->health), VAL_DRAW_FRAME_AND_INTERIOR);
 }
+static void AngleCheck(TANK* tank)
+{
+	if (tank->angle < 0)
+		tank->angle = 0;
+	else if(tank->angle > 180)	
+		tank->angle = 180;
+	else if (tank->position->x > 700 && tank->angle < 90 )
+		tank->angle = 90;
+	else if	(tank->position->x < 700 && tank->angle > 90 )
+		tank->angle = 90;
 
-
+}
+static void PositionCheck(TANK* tank)
+{
+	if (tank->position->x > 1730 )
+		tank->position->x = 1730;
+	else if (tank->position->x < 0)
+		tank->position->x = 0;
+	else if(tank->position->x > 400 && tank->angle < 90 )
+		tank->position->x = 400;
+	else if(tank->position->x < 1250 && tank->angle > 90 )
+		tank->position->x = 1250;	
+}
 
 
 
