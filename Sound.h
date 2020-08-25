@@ -23,7 +23,7 @@
 // Constants
 #define ThemeSong "Sounds\\ha_ha_youre_dead_lyrics_green_day.mp3"
 #define ShootingSFX "Sounds\\Tank_Shooting.mp3"
-#define InitialVolume 0
+#define InitialVolume 50
 //==============================================================================
 // Types
 

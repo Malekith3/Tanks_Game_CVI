@@ -1,9 +1,11 @@
+#include <utility.h>
 #include "Tank_Game.h"
 #include <ansi_c.h>
 #include "Tank_Object.h"
 
-
-
+//----------------Varaiables---------------------------------------------------//
+ const double deltaAngle=(90-0)/14.0;		//15 images going from 0 to 90 degrees
+//----------------------------------------------------------------------------//
 POSITION* new_POSITION(double x,double y)
 {
 	POSITION* position=calloc(1,sizeof(POSITION));
@@ -27,6 +29,7 @@ TANK* new_TANK(POSITION* position,double angle,int health,int* image)
 	tank->Draw_Tank=&Draw_Tank;
 	tank->BeenHit=&BeenHit;
 	tank->DrawHealthBar=&DrawHealthBar;
+	tank->SetBarrelImage=&SetBarrelImage;
 	return tank;
 }
 int* new_Image(char* path)
@@ -53,7 +56,7 @@ void Move_NegX(TANK* tank)		//moving in the negative direction of x axis
 void LowerBarrel(TANK* tank)
 {
 	
-		tank->angle-=6;
+		tank->angle-=deltaAngle;
 		AngleCheck(tank);
 	
 }
@@ -61,7 +64,7 @@ void LowerBarrel(TANK* tank)
 void UpperBarrel(TANK* tank)
 {
 	
-	tank->angle+=6;
+	tank->angle+=deltaAngle;
 	AngleCheck(tank);
 }
 
@@ -96,6 +99,15 @@ static void AngleCheck(TANK* tank)
 		tank->angle = 90;
 
 }
+
+void SetBarrelImage(TANK* tank,int tankIndex)
+{
+	free(tank->image);
+	if(!tankIndex)
+		tank->image=new_Image(LeftBarrel[RoundRealToNearestInteger(tank->angle/deltaAngle)]);
+	else
+		tank->image=new_Image(RightBarrel[RoundRealToNearestInteger((180-tank->angle)/deltaAngle)]);
+}
 static void PositionCheck(TANK* tank)
 {
 	if (tank->position->x > 1730 )
@@ -107,6 +119,8 @@ static void PositionCheck(TANK* tank)
 	else if(tank->position->x < 1250 && tank->angle > 90 )
 		tank->position->x = 1250;	
 }
+
+
 
 
 

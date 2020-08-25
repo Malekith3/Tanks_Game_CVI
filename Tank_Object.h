@@ -25,12 +25,15 @@ typedef struct tank													//defines a Tank object
 	void (*Draw_Tank)(struct tank* self);
 	void (*BeenHit)(struct tank* self);
 	void (*DrawHealthBar)(struct tank* self);
+	void (*SetBarrelImage)(struct tank* self,int tankIndex);
 }TANK;
 //-------------------------------------------------------------------------------------------//
 
 //--------------------External variables-------------------------------------------------------//
 extern int gamePanel;
 extern GROUND* ground;
+extern char* LeftBarrel[15];
+extern char* RightBarrel[15];
 //----------------------------Static Functions-----------------------------------------------//
 static void AngleCheck(TANK* tank);
 static void PositionCheck(TANK* tank);
@@ -45,6 +48,7 @@ void UpperBarrel(TANK* tank); 										// Increase angle of barrel
 void Draw_Tank(TANK* tank); 										// Draw tank on canvas
 void BeenHit(TANK* tank);
 void DrawHealthBar(TANK* tank);
+void SetBarrelImage(TANK* tank,int tankIndex);
 int* new_Image(char* path); 										// It's a constructor for image pointer 
 #endif 
 //-------------------------------End of File-----------------------------------------------//

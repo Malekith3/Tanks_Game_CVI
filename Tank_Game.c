@@ -21,6 +21,8 @@ CmtThreadPoolHandle MY_THREAD_POOL;
 CmtThreadPoolHandle RenderingID;
 int menuPanel,gamePanel,controlsPanel,wmp_Panel,optionsPanel,gameOverPanel;
 static int turn,pause,gameOver;
+char* LeftBarrel[15];
+char* RightBarrel[15];
 double velocity ,windPower;
 static char windText[20] ;
 static PROJECTILE* projectile;
@@ -77,7 +79,6 @@ int CVICALLBACK Start_Game (int panel, int control, int event,
 	{
 		case EVENT_COMMIT:
 			InitializeGame();
-			
 			StopSound();
 			HidePanel(menuPanel);
 			HidePanel(gameOverPanel);
@@ -149,7 +150,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 							Fire_Projectile(projectile,tanks[0]);
 							//------------Need to be under Collision Detection-------------------
 							if(tanks[1]->health!=0)
-								tanks[1]->DrawHealthBar(tanks[1]);
+								DrawAllScene();
 							else		//tank is dead
 							{
 								//explotion should be here			
@@ -217,6 +218,11 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					if(!turn&&!pause&&!gameOver)		//active only at the turn of the left tank and when unpaused and when game is not over
 					{
 						tanks[0]->UpperBarrel(tanks[0]);
+						tanks[0]->SetBarrelImage(tanks[0],0);
+						DrawAllScene();
+						//tanks[0]->Draw_Tank(tanks[0]);
+						//tanks[0]->DrawHealthBar(tanks[0]);
+						
 					}
 					break;
 					
@@ -224,6 +230,10 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					if(!turn&&!pause&&!gameOver)
 					{
 						tanks[0]->LowerBarrel(tanks[0]);
+						tanks[0]->SetBarrelImage(tanks[0],0);
+						DrawAllScene();
+						tanks[0]->Draw_Tank(tanks[0]);
+						tanks[0]->DrawHealthBar(tanks[0]);
 					}
 					break;
 					
@@ -251,7 +261,10 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					if(turn&&!pause&&!gameOver)
 					{
 						tanks[1]->LowerBarrel(tanks[1]);
-						
+						tanks[1]->SetBarrelImage(tanks[1],1);
+						DrawAllScene();
+						//tanks[1]->Draw_Tank(tanks[1]);
+						//tanks[1]->DrawHealthBar(tanks[1]);
 					}
 					break;
 					
@@ -259,6 +272,10 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					if(turn&&!pause&&!gameOver)
 					{
 						tanks[1]->UpperBarrel(tanks[1]);
+						tanks[1]->SetBarrelImage(tanks[1],1);
+						DrawAllScene();
+						//tanks[1]->Draw_Tank(tanks[1]);
+						//tanks[1]->DrawHealthBar(tanks[1]);
 						
 					}
 					break;
@@ -269,7 +286,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 						tanks[1]->Move_NegX(tanks[1]);
 						//tanks[1]->Draw_Tank(tanks[1]);
 						//tanks[1]->DrawHealthBar(tanks[1]);
-						DrawAllScene();
+						//DrawAllScene();
 					}
 					break;
 					
@@ -360,11 +377,28 @@ int CVICALLBACK ChangeVolume (int panel, int control, int event,
 
 void InitializeGame()														//sets up all objects neccessary for the game
 {
+	//--------------initialize paths for assets---------------------------------------------//
+	for(int i=0;i<15;i++)
+	{
+		if(i<10)
+		{
+			LeftBarrel[i]=calloc(strlen("Assets\\Animation\\Tank_Left\\Tank_Get_Ready\\0_Tank_Get_Ready.png")+1,sizeof(char));
+			RightBarrel[i]=calloc(strlen("Assets\\Animation\\Tank_Right\\Tank_Get_Ready\\0_Tank_Get_Ready.png")+1,sizeof(char));
+		}
+		
+		else
+		{
+			LeftBarrel[i]=calloc(strlen("Assets\\Animation\\Tank_Left\\Tank_Get_Ready\\10_Tank_Get_Ready.png")+1,sizeof(char));
+			RightBarrel[i]=calloc(strlen("Assets\\Animation\\Tank_Right\\Tank_Get_Ready\\10_Tank_Get_Ready.png")+1,sizeof(char));
+		}
+		sprintf(LeftBarrel[i],"Assets\\Animation\\Tank_Left\\Tank_Get_Ready\\%d_Tank_Get_Ready.png",i);
+		sprintf(RightBarrel[i],"Assets\\Animation\\Tank_Right\\Tank_Get_Ready\\%d_Tank_Get_Ready.png",i);
+	}
 	gameOver=0;
 	pause=0;
 	turn=0;
-	tanks[0]=new_TANK(new_POSITION(10.00,390.00),50.00,100,new_Image("Assets//Animation//Tank_Left//Tank_Mouvement//01_Tank.png"));
-	tanks[1]=new_TANK(new_POSITION(1700.00,390.00),130.00,100,new_Image("Assets//Animation//Tank_Right//Tank_Mouvement//01_Tank.png"));
+	tanks[0]=new_TANK(new_POSITION(10.00,390.00),0.0,100,new_Image("Assets//Animation//Tank_Left//Tank_Mouvement//01_Tank.png"));
+	tanks[1]=new_TANK(new_POSITION(1700.00,390.00),180.0,100,new_Image("Assets//Animation//Tank_Right//Tank_Mouvement//01_Tank.png"));
 	projectile = new_PROJECTILE(new_POSITION(2000,2000));
 	ground = new_Ground(new_Image("Assets//Animation//Ground//01_Ground.jpg"));
 	SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
@@ -383,7 +417,15 @@ void DiscardAll()
 	//--------------------------------------------------------------//
 	for(int i=0;i<2;i++)		//Discard tanks
 		free(tanks[i]);
+	
 	free(projectile);			//Discrad projectile
+	
+	for(int i=0;i<15;i++)		//Discard path strings
+	{
+			free(LeftBarrel[i]);
+			free(RightBarrel[i]);
+	}
+	
 	
 }
 
@@ -400,7 +442,6 @@ void RefreshCanvas()
 }
 int DrawAllScene()
 {
-
 	ground->Draw_Ground(ground);
 	for(int i=0;i<2;i++)					
 	{
