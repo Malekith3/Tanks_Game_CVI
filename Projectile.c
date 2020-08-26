@@ -53,8 +53,17 @@ void Fire_Projectile(PROJECTILE* projectile , TANK* tank)
 {
 	PlaySound(ShootingSFX);
 	InitVelocety(tank);
-	projectile->position->x = tank->position->x +200;
-	projectile->position->y = tank->position->y +50;
+	if ( tank->position->x < 940 ) // Detect taht we deal with 
+	{
+		projectile->position->x = tank->position->x +200;
+		projectile->position->y = tank->position->y +20;
+	}
+	else
+	{
+		projectile->position->x = tank->position->x;
+		projectile->position->y = tank->position->y +20;
+	}
+
 }
 void Draw_Projectile(PROJECTILE* projectile)
 {
