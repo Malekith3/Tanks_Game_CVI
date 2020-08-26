@@ -11,6 +11,7 @@
 //==============================================================================
 // Include files
 
+#include <utility.h>
 #include <userint.h>
 #include "Collison_Module.h"
 #include "Tank_Game.h"
@@ -56,7 +57,26 @@ void DetectCollision(PROJECTILE* projectile)
 				projectile->position->y = 1090;
 				DrawAllScene();
 				tanks[i]->BeenHit(tanks[i]);
-				DrawAllScene();
+				if(tanks[i]->health==0)			//tank is dead
+				{
+					gameOver=1;
+					CanvasClear (gamePanel, Game_Panel_CANVAS, MakeRect (tanks[i]->position->y, tanks[i]->position->x, 313, 417));		//undraw tank
+					ground->Draw_Ground(ground);
+					tanks[!i]->Draw_Tank(tanks[!i]);
+					tanks[!i]->DrawHealthBar(tanks[!i]);
+					Delay(1);
+					HidePanel(gamePanel);
+					DisplayPanel(gameOverPanel);
+					if(i==0)
+						SetCtrlVal (gameOverPanel, GameOver_Tank_Won_String, "Right Tank won!");
+					else
+						SetCtrlVal (gameOverPanel, GameOver_Tank_Won_String, "Left Tank won!");
+					break;
+						
+					
+				}
+				else
+					DrawAllScene();
 			
 			}
 		  		 

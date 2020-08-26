@@ -20,7 +20,8 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 CmtThreadPoolHandle MY_THREAD_POOL;
 CmtThreadPoolHandle RenderingID;
 int menuPanel,gamePanel,controlsPanel,wmp_Panel,optionsPanel,gameOverPanel;
-static int turn,pause,gameOver;
+int gameOver;
+static int turn,pause;
 char* LeftBarrel[15];
 char* RightBarrel[15];
 double velocity ,windPower;
@@ -149,7 +150,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 							turn = First_Tank_Fire;
 							Fire_Projectile(projectile,tanks[0]);
 							//------------Need to be under Collision Detection-------------------
-							if(tanks[1]->health!=0)
+							/*if(tanks[1]->health!=0)
 								DrawAllScene();
 							else		//tank is dead
 							{
@@ -159,7 +160,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 								DisplayPanel(gameOverPanel);
 								SetCtrlVal (gameOverPanel, GameOver_Tank_Won_String, "Left Tank won!");
 							}
-								
+								*/
 						}	
 							//-------------------------------------------------------------------
 						
@@ -170,7 +171,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 							//------------Need to be under Collision Detection-------------------
 							//tanks[0]->BeenHit(tanks[0]);
 							//RefreshCanvas();
-							if(tanks[0]->health!=0)
+							/*if(tanks[0]->health!=0)
 								tanks[0]->DrawHealthBar(tanks[0]);
 							else		//tank is dead
 							{
@@ -180,7 +181,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 								DisplayPanel(gameOverPanel);
 								SetCtrlVal (gameOverPanel, GameOver_Tank_Won_String, "Right Tank won!");
 							}
-								
+								*/
 							
 							//-------------------------------------------------------------------
 								
