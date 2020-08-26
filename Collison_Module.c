@@ -16,7 +16,7 @@
 #include "Collison_Module.h"
 #include "Tank_Game.h"
 #include <utility.h>
-
+#include "Animation.h"
 //==============================================================================
 // Constants
 const double C_Y = 480,C_X =1280 , A_X =600 ,A_Y = 500 ,B_X =940 , B_Y =120 ;
@@ -45,9 +45,12 @@ void DetectCollision(PROJECTILE* projectile)
 	//Cheking mounten collision
 	if(poinInTriangle(projectile))
 	{
-		projectile->position->y = 1090;
 		SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
 		DrawAllScene();
+		AnimateExplosion();
+		projectile->position->y = 1090;
+		//SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
+		//DrawAllScene();
 		
 	
 	}
@@ -57,8 +60,10 @@ void DetectCollision(PROJECTILE* projectile)
 		{
 			if (tanks[i]->position->x < projectile->position->x && tanks[i]->position->x + 200 > projectile->position->x && tanks[i]->position->y+50 < projectile->position->y && tanks[i]->position->y + 150 > projectile->position->y )
 			{
-				projectile->position->y = 1090;
 				SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
+				AnimateExplosion();
+				projectile->position->y = 1090;
+				//SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
 				DrawAllScene();
 				tanks[i]->BeenHit(tanks[i]);
 				if(tanks[i]->health==0)			//tank is dead
@@ -94,8 +99,10 @@ static void CheckCollisionForProjectileAndGround(PROJECTILE* projectile)
 	else	
 	if(projectile->position->y > 500 )
 	{
-		projectile->position->y = 1090;
 		SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
+		AnimateExplosion();
+		projectile->position->y = 1090;
+		//SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
 		DrawAllScene();
 
 	}

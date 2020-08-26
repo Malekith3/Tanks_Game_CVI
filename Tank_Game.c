@@ -8,7 +8,7 @@
 #include "Sound.h"
 #include "Projectile.h"
 #include "Ground_Object.h"
-
+#include "Animation.h"
 
 ///////////////////////////Functions/////////////////////
 void InitializeGame();
@@ -23,9 +23,10 @@ int gameOver;
 static int turn,pause;
 char* LeftBarrel[15];
 char* RightBarrel[15];
+char* Explosion[15];
 double velocity ,windPower;
 static char windText[20] ;
-static PROJECTILE* projectile;
+ PROJECTILE* projectile;
 TANK* tanks[2];
 GROUND* ground;
 static int postinghandle;
@@ -379,6 +380,7 @@ int CVICALLBACK ChangeVolume (int panel, int control, int event,
 
 void InitializeGame()														//sets up all objects neccessary for the game
 {
+	InitilalizeAnimation();
 	//--------------initialize paths for assets---------------------------------------------//
 	for(int i=0;i<15;i++)
 	{
@@ -386,15 +388,18 @@ void InitializeGame()														//sets up all objects neccessary for the game
 		{
 			LeftBarrel[i]=calloc(strlen("Assets\\Animation\\Tank_Left\\Tank_Get_Ready\\0_Tank_Get_Ready.png")+1,sizeof(char));
 			RightBarrel[i]=calloc(strlen("Assets\\Animation\\Tank_Right\\Tank_Get_Ready\\0_Tank_Get_Ready.png")+1,sizeof(char));
+			Explosion[i]=calloc(strlen("Assets\\Animation\\Explosion\\0_Explosion.png")+1,sizeof(char));
 		}
 		
 		else
 		{
 			LeftBarrel[i]=calloc(strlen("Assets\\Animation\\Tank_Left\\Tank_Get_Ready\\10_Tank_Get_Ready.png")+1,sizeof(char));
 			RightBarrel[i]=calloc(strlen("Assets\\Animation\\Tank_Right\\Tank_Get_Ready\\10_Tank_Get_Ready.png")+1,sizeof(char));
+			Explosion[i]=calloc(strlen("Assets\\Animation\\Explosion\\10_Explosion.png")+1,sizeof(char));
 		}
 		sprintf(LeftBarrel[i],"Assets\\Animation\\Tank_Left\\Tank_Get_Ready\\%d_Tank_Get_Ready.png",i);
 		sprintf(RightBarrel[i],"Assets\\Animation\\Tank_Right\\Tank_Get_Ready\\%d_Tank_Get_Ready.png",i);
+		sprintf(Explosion[i],"Assets\\Animation\\Explosion\\%d_Explosion.png",i);
 	}
 	gameOver=0;
 	pause=0;
@@ -426,7 +431,10 @@ void DiscardAll()
 	{
 			free(LeftBarrel[i]);
 			free(RightBarrel[i]);
+			free(Explosion[i]);
 	}
+	
+	DiscardAnimation();
 	
 	
 }
