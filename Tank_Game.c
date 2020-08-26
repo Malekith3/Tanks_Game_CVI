@@ -17,8 +17,7 @@ void RefreshCanvas();
 int DrawAllScene();
 int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsigned int* lParam,void* callbackData);
 //--------------------------------------------------------------------------------------------------------------------
-CmtThreadPoolHandle MY_THREAD_POOL;
-CmtThreadPoolHandle RenderingID;
+CmtThreadPoolHandle MY_THREAD_POOL , RenderingID ;
 int menuPanel,gamePanel,controlsPanel,wmp_Panel,optionsPanel,gameOverPanel;
 int gameOver;
 static int turn,pause;
@@ -148,6 +147,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 						if(!turn)
 						{
 							turn = First_Tank_Fire;
+							SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
 							Fire_Projectile(projectile,tanks[0]);
 							//------------Need to be under Collision Detection-------------------
 							/*if(tanks[1]->health!=0)
@@ -167,6 +167,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 						else
 						{
 							turn = Second_Tank_Fire;
+							SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
 							Fire_Projectile(projectile,tanks[1]);
 							//------------Need to be under Collision Detection-------------------
 							//tanks[0]->BeenHit(tanks[0]);
@@ -233,8 +234,8 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 						tanks[0]->LowerBarrel(tanks[0]);
 						tanks[0]->SetBarrelImage(tanks[0],0);
 						DrawAllScene();
-						tanks[0]->Draw_Tank(tanks[0]);
-						tanks[0]->DrawHealthBar(tanks[0]);
+						//tanks[0]->Draw_Tank(tanks[0]);
+						//tanks[0]->DrawHealthBar(tanks[0]);
 					}
 					break;
 					
@@ -287,7 +288,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 						tanks[1]->Move_NegX(tanks[1]);
 						//tanks[1]->Draw_Tank(tanks[1]);
 						//tanks[1]->DrawHealthBar(tanks[1]);
-						//DrawAllScene();
+						DrawAllScene();
 					}
 					break;
 					
@@ -402,7 +403,7 @@ void InitializeGame()														//sets up all objects neccessary for the game
 	tanks[1]=new_TANK(new_POSITION(1700.00,390.00),180.0,100,new_Image("Assets//Animation//Tank_Right//Tank_Mouvement//01_Tank.png"));
 	projectile = new_PROJECTILE(new_POSITION(2000,2000));
 	ground = new_Ground(new_Image("Assets//Animation//Ground//01_Ground.jpg"));
-	SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
+	
 }
 
 void DiscardAll()
@@ -443,6 +444,8 @@ void RefreshCanvas()
 }
 int DrawAllScene()
 {
+	
+
 	ground->Draw_Ground(ground);
 	for(int i=0;i<2;i++)					
 	{
@@ -452,6 +455,7 @@ int DrawAllScene()
 	CanvasDefaultPen (gamePanel, Game_Panel_CANVAS);
 	sprintf(windText,"Wind : %f",windPower);
 	CanvasDrawTextAtPoint (gamePanel, Game_Panel_CANVAS, windText, VAL_APP_META_FONT, MakePoint(1850,50), VAL_CENTER);
+
 	return 0;
 }
 

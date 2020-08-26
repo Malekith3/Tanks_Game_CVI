@@ -11,10 +11,11 @@
 //==============================================================================
 // Include files
 
-#include <utility.h>
+
 #include <userint.h>
 #include "Collison_Module.h"
 #include "Tank_Game.h"
+#include <utility.h>
 
 //==============================================================================
 // Constants
@@ -45,7 +46,9 @@ void DetectCollision(PROJECTILE* projectile)
 	if(poinInTriangle(projectile))
 	{
 		projectile->position->y = 1090;
+		SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
 		DrawAllScene();
+		
 	
 	}
 	//cheking colision projectile and tank
@@ -55,6 +58,7 @@ void DetectCollision(PROJECTILE* projectile)
 			if (tanks[i]->position->x < projectile->position->x && tanks[i]->position->x + 200 > projectile->position->x && tanks[i]->position->y+50 < projectile->position->y && tanks[i]->position->y + 150 > projectile->position->y )
 			{
 				projectile->position->y = 1090;
+				SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
 				DrawAllScene();
 				tanks[i]->BeenHit(tanks[i]);
 				if(tanks[i]->health==0)			//tank is dead
@@ -91,7 +95,9 @@ static void CheckCollisionForProjectileAndGround(PROJECTILE* projectile)
 	if(projectile->position->y > 500 )
 	{
 		projectile->position->y = 1090;
+		SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
 		DrawAllScene();
+
 	}
 	else if (projectile->position->y < 0)
 		velocityY = -velocityY ;
