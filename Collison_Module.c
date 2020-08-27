@@ -46,11 +46,11 @@ void DetectCollision(PROJECTILE* projectile)
 	if(poinInTriangle(projectile))
 	{
 		SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
-		DrawAllScene();
+		//DrawAllScene();
 		AnimateExplosion();
 		projectile->position->y = 1090;
 		//SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
-		//DrawAllScene();
+		DrawAllScene();
 		
 	
 	}

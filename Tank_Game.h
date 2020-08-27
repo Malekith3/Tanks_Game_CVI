@@ -41,7 +41,8 @@
 #define  Controls_A_Key_Pic               26      /* control type: picture, callback function: (none) */
 #define  Controls_Esc_Pic                 27      /* control type: picture, callback function: (none) */
 #define  Controls_CloseControls           28      /* control type: command, callback function: ResumeGame */
-#define  Controls_M_Key_Pic               29      /* control type: picture, callback function: (none) */
+#define  Controls_Back_To_Options         29      /* control type: command, callback function: Back_To_Options */
+#define  Controls_M_Key_Pic               30      /* control type: picture, callback function: (none) */
 
 #define  Game_Panel                       2
 #define  Game_Panel_CANVAS                2       /* control type: canvas, callback function: (none) */
@@ -85,6 +86,7 @@
      /* Callback Prototypes: */
 
 int  CVICALLBACK Back_To_Main(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
+int  CVICALLBACK Back_To_Options(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK ChangeVolume(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK Mute_Callback(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK MyTimer(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);

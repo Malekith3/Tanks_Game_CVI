@@ -78,7 +78,7 @@ int CVICALLBACK Start_Game (int panel, int control, int event,
 {
 	switch (event)
 	{
-		case EVENT_COMMIT:
+		case EVENT_LEFT_CLICK:
 			InitializeGame();
 			StopSound();
 			HidePanel(menuPanel);
@@ -97,9 +97,25 @@ int CVICALLBACK Show_Controls (int panel, int control, int event,
 {
 	switch (event)
 	{
-		case EVENT_COMMIT:
+		case EVENT_LEFT_CLICK:
+			int visible;
 			HidePanel(menuPanel);					
 			DisplayPanel (controlsPanel);
+			GetPanelAttribute (gamePanel, ATTR_VISIBLE, &visible);
+			
+			if(!visible)		//gamePanel is hidden
+			{
+				SetCtrlAttribute (controlsPanel, Controls_CloseControls, ATTR_VISIBLE, 0);		//hide Resume Game button(you can't resume the game if you haven't started one)
+				SetCtrlAttribute (controlsPanel, Controls_Back_To_Options, ATTR_VISIBLE, 0);	//options menu is avaliable only from gamePanel
+				SetCtrlAttribute (controlsPanel, Controls_Back_Button, ATTR_VISIBLE, 1);		//show back to main menu button again
+			}
+			else
+			{
+				SetCtrlAttribute (controlsPanel, Controls_CloseControls, ATTR_VISIBLE, 1);			//show Resume game butoon back
+				SetCtrlAttribute (controlsPanel, Controls_Back_To_Options, ATTR_VISIBLE, 1);		//options menu is now available
+				SetCtrlAttribute (controlsPanel, Controls_Back_Button, ATTR_VISIBLE, 0);			//hide back to main menu button
+			}
+				
 			break;
 	}
 	return 0;
@@ -112,7 +128,7 @@ int CVICALLBACK QuitCallback (int panel, int control, int event,
 {
 	switch (event)
 	{
-		case EVENT_COMMIT:
+		case EVENT_LEFT_CLICK:
 			if(GenericMessagePopup ("Quit Confirmation", "Are you sure you want to quit?", "Yes", "No", 0, 0, 0, 0, VAL_GENERIC_POPUP_BTN1, VAL_GENERIC_POPUP_BTN1, VAL_GENERIC_POPUP_BTN2)==VAL_GENERIC_POPUP_BTN1)//Yes
 						QuitUserInterface(0);
 			break;
@@ -125,7 +141,7 @@ int CVICALLBACK Back_To_Main (int panel, int control, int event,
 {
 	switch (event)
 	{
-		case EVENT_COMMIT:
+		case EVENT_LEFT_CLICK:
 			HidePanel(controlsPanel);					
 			DisplayPanel(menuPanel);
 			break;
@@ -335,7 +351,7 @@ int CVICALLBACK Mute_Callback (int panel, int control, int event,
 {
 	switch (event)
 	{
-		case EVENT_COMMIT:
+		case EVENT_LEFT_CLICK:
 			ToggleMute();
 			break;
 	}
@@ -361,7 +377,7 @@ int CVICALLBACK ChangeVolume (int panel, int control, int event,
 {
 	switch (event)
 	{
-		case EVENT_COMMIT:
+		case EVENT_LEFT_CLICK:
 			int volume;
 			int visible;
 			GetPanelAttribute (menuPanel, ATTR_VISIBLE, &visible);
@@ -375,6 +391,21 @@ int CVICALLBACK ChangeVolume (int panel, int control, int event,
 	}
 	return 0;
 }
+
+
+int CVICALLBACK Back_To_Options (int panel, int control, int event,
+								 void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+	{
+		case EVENT_LEFT_CLICK:
+			HidePanel(controlsPanel);
+			DisplayPanel(optionsPanel);
+			break;
+	}
+	return 0;
+}
+
 
 
 
