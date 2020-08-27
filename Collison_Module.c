@@ -26,15 +26,16 @@ const double C_Y = 480,C_X =1280 , A_X =600 ,A_Y = 500 ,B_X =940 , B_Y =120 ;
 
 //==============================================================================
 // Static global variables
-
+extern CmtThreadPoolHandle MY_THREAD_POOL , AnimationID;
 //==============================================================================
 // Static functions
 static void CheckCollisionForProjectileAndGround(PROJECTILE* projectile);
 static int poinInTriangle(PROJECTILE* projectile); // function to determine if point in triangle
 static int TankProjectileCollDitection(PROJECTILE* projectile);//
+static void SaveStateOfProjectile(PROJECTILE* projectile);//
 //==============================================================================
 // Global variables
-
+PROJECTILE* ghostProjectiile;
 //==============================================================================
 // Global functions
 extern int DrawAllScene();
@@ -47,9 +48,10 @@ void DetectCollision(PROJECTILE* projectile)
 	{
 		SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
 		//DrawAllScene();
-		AnimateExplosion();
+		SaveStateOfProjectile(projectile);
+		CmtScheduleThreadPoolFunction (MY_THREAD_POOL, AnimateExplosion, NULL, &AnimationID);
 		projectile->position->y = 1090;
-		//SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
+		SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
 		DrawAllScene();
 		
 	
@@ -58,12 +60,13 @@ void DetectCollision(PROJECTILE* projectile)
 	
 		for (int i = 0; i<2; i++)
 		{
-			if (tanks[i]->position->x < projectile->position->x && tanks[i]->position->x + 200 > projectile->position->x && tanks[i]->position->y+50 < projectile->position->y && tanks[i]->position->y + 150 > projectile->position->y )
+			if (tanks[i]->position->x -50 < projectile->position->x && tanks[i]->position->x + 250 > projectile->position->x && tanks[i]->position->y+50 < projectile->position->y && tanks[i]->position->y + 150 > projectile->position->y )
 			{
 				SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
-				AnimateExplosion();
+				SaveStateOfProjectile(projectile);
+				CmtScheduleThreadPoolFunction (MY_THREAD_POOL, AnimateExplosion, NULL, &AnimationID);
 				projectile->position->y = 1090;
-				//SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
+				SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
 				DrawAllScene();
 				tanks[i]->BeenHit(tanks[i]);
 				if(tanks[i]->health==0)			//tank is dead
@@ -100,9 +103,10 @@ static void CheckCollisionForProjectileAndGround(PROJECTILE* projectile)
 	if(projectile->position->y > 500 )
 	{
 		SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
-		AnimateExplosion();
+		SaveStateOfProjectile(projectile);
+		CmtScheduleThreadPoolFunction (MY_THREAD_POOL, AnimateExplosion, NULL, &AnimationID);
 		projectile->position->y = 1090;
-		//SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
+		SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
 		DrawAllScene();
 
 	}
@@ -127,4 +131,8 @@ static int poinInTriangle(PROJECTILE* projectile)
 	}
 	else
 		return 0;
+}
+static void SaveStateOfProjectile(PROJECTILE* projectile)
+{
+	ghostProjectiile = new_PROJECTILE(new_POSITION(projectile->position->x,projectile->position->y));
 }

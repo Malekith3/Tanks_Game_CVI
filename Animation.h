@@ -30,11 +30,11 @@
 // External variables
 extern char* Explosion[15];
 extern int gamePanel;
-extern PROJECTILE* projectile;
+extern PROJECTILE* ghostProjectiile;
 //==============================================================================
 // Global functions
-
-void AnimateExplosion();
+int DrawAllScene();
+int AnimateExplosion();
 void DiscardAnimation();
 void InitilalizeAnimation();
 #ifdef __cplusplus

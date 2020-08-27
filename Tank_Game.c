@@ -17,7 +17,7 @@ void RefreshCanvas();
 int DrawAllScene();
 int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsigned int* lParam,void* callbackData);
 //--------------------------------------------------------------------------------------------------------------------
-CmtThreadPoolHandle MY_THREAD_POOL , RenderingID ;
+CmtThreadPoolHandle MY_THREAD_POOL , RenderingID ,AnimationID ;
 int menuPanel,gamePanel,controlsPanel,wmp_Panel,optionsPanel,gameOverPanel;
 int gameOver;
 static int turn,pause;
