@@ -15,8 +15,10 @@
 #include <userint.h>
 #include "Collison_Module.h"
 #include "Tank_Game.h"
+#include "Sound.h"
 #include <utility.h>
 #include "Animation.h"
+
 //==============================================================================
 // Constants
 const double C_Y = 480,C_X =1280 , A_X =600 ,A_Y = 500 ,B_X =940 , B_Y =120 ;
@@ -49,6 +51,7 @@ void DetectCollision(PROJECTILE* projectile)
 		SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
 		//DrawAllScene();
 		SaveStateOfProjectile(projectile);
+		PlaySound(ExplosionSFX);
 		CmtScheduleThreadPoolFunction (MY_THREAD_POOL, AnimateExplosion, NULL, &AnimationID);
 		projectile->position->y = 1090;
 		SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
@@ -64,6 +67,7 @@ void DetectCollision(PROJECTILE* projectile)
 			{
 				SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
 				SaveStateOfProjectile(projectile);
+				PlaySound(ExplosionSFX);
 				CmtScheduleThreadPoolFunction (MY_THREAD_POOL, AnimateExplosion, NULL, &AnimationID);
 				projectile->position->y = 1090;
 				SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
@@ -104,6 +108,7 @@ static void CheckCollisionForProjectileAndGround(PROJECTILE* projectile)
 	{
 		SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
 		SaveStateOfProjectile(projectile);
+		PlaySound(ExplosionSFX);
 		CmtScheduleThreadPoolFunction (MY_THREAD_POOL, AnimateExplosion, NULL, &AnimationID);
 		projectile->position->y = 1090;
 		SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
