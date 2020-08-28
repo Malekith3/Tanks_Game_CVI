@@ -379,7 +379,7 @@ int CVICALLBACK ChangeVolume (int panel, int control, int event,
 {
 	switch (event)
 	{
-		case EVENT_LEFT_CLICK:
+		case EVENT_COMMIT:
 			int volume;
 			int visible;
 			GetPanelAttribute (menuPanel, ATTR_VISIBLE, &visible);

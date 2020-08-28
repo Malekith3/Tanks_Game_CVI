@@ -55,7 +55,9 @@ void StopSound()
 
 void SetVolume(long volume)
 {
-	WMPLib_IWMPSettingsSetvolume (WMP_Handle, NULL, volume);
+	WMPLib_IWMPSettingsGetmute (WMP_Handle, NULL, &mute);
+	if(!mute)
+		WMPLib_IWMPSettingsSetvolume (WMP_Handle, NULL, volume);
 }
 
 void ToggleMute()			//mutes/unmutes the sound
