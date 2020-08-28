@@ -34,6 +34,7 @@ extern GROUND* ground;
 extern int gameOver;
 extern int gamePanel;
 extern int gameOverPanel;
+
 //==============================================================================
 // Global functions
 void DetectCollision(PROJECTILE* projectile);

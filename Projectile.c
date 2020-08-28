@@ -10,13 +10,13 @@
 
 //==============================================================================
 // Include files
-
+#include "Sound.h"
+#include "toolbox.h"
 #include <userint.h>
 #include <ansi_c.h>
 #include "Projectile.h"
 #include "Physics_Engine.h"
 #include "Tank_Game.h"
-#include "Sound.h"
 #include "Collison_Module.h"
 //==============================================================================
 // Constants
@@ -55,13 +55,24 @@ void Fire_Projectile(PROJECTILE* projectile , TANK* tank)
 	InitVelocety(tank);
 	if ( tank->position->x < 940 ) // Detect taht we deal with 
 	{
-		projectile->position->x = tank->position->x +200;
-		projectile->position->y = tank->position->y +20;
+		projectile->position->x = tank->position->x + 160 + 80*cos(tank->angle);
+		projectile->position->y = tank->position->y + 92 - 80*sin(tank->angle);
 	}
 	else
 	{
-		projectile->position->x = tank->position->x;
-		projectile->position->y = tank->position->y +20;
+		if(tank->angle < 100)
+		{
+			
+			projectile->position->x = tank->position->x - 25  + 100 * sin((tank->angle*Pi())/180 );
+			projectile->position->y = tank->position->y + 80 - 70 * sin((tank->angle*Pi())/180 );
+		
+		}
+		else
+		{
+		
+			projectile->position->x = tank->position->x - 40  + 80 * sin((tank->angle*Pi())/180 );
+			projectile->position->y = tank->position->y + 80 - 70 * sin((tank->angle*Pi())/180 );
+		}
 	}
 
 }

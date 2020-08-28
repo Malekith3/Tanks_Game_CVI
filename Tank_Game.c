@@ -20,7 +20,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 CmtThreadPoolHandle MY_THREAD_POOL , RenderingID ,AnimationID ;
 int menuPanel,gamePanel,controlsPanel,wmp_Panel,optionsPanel,gameOverPanel;
 int gameOver;
-static int turn,pause;
+int turn,pause;
 char* LeftBarrel[15];
 char* RightBarrel[15];
 char* Explosion[15];
@@ -166,6 +166,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 							turn = First_Tank_Fire;
 							SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
 							Fire_Projectile(projectile,tanks[0]);
+							pause =1 ;
 							//------------Need to be under Collision Detection-------------------
 							/*if(tanks[1]->health!=0)
 								DrawAllScene();
@@ -186,6 +187,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 							turn = Second_Tank_Fire;
 							SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
 							Fire_Projectile(projectile,tanks[1]);
+							pause =1 ;
 							//------------Need to be under Collision Detection-------------------
 							//tanks[0]->BeenHit(tanks[0]);
 							//RefreshCanvas();

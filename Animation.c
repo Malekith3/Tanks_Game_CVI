@@ -48,8 +48,10 @@ int AnimateExplosion()
 		CanvasDrawBitmap (gamePanel, Game_Panel_CANVAS, *(AnimationImage), VAL_ENTIRE_OBJECT, MakeRect (projectile->position->y-234, projectile->position->x-213, 468, 417));
 		Delay(1.0/15.0);
 		CanvasEndBatchDraw (gamePanel, Game_Panel_CANVAS);
+		
 	}
 	DrawAllScene();
+	pause =0;
 	return 0;
 }
 void InitilalizeAnimation()

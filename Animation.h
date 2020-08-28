@@ -29,7 +29,7 @@
 //==============================================================================
 // External variables
 extern char* Explosion[15];
-extern int gamePanel;
+extern int gamePanel , pause;
 extern PROJECTILE* ghostProjectiile;
 //==============================================================================
 // Global functions
