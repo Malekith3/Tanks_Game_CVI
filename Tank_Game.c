@@ -1,3 +1,17 @@
+//==============================================================================
+//
+// Title:		Tank_Game.c
+// Purpose:		Main game client that run all necessery function to run the game
+//
+// Created on:	10/08/2020 at 19:59:41 by Barack Samuni and Alex Bordeaux.
+// Copyright:	Afeka academic college of engineering. All Rights Reserved.
+//
+//==============================================================================
+
+
+
+//===============================================================================
+// Include files
 #include <ansi_c.h>
 #include <cvirte.h>		
 #include <userint.h>
@@ -9,7 +23,7 @@
 #include "Projectile.h"
 #include "Ground_Object.h"
 #include "Animation.h"
-
+//===============================================================================
 ///////////////////////////Functions/////////////////////
 void InitializeGame();
 void DiscardAll();
@@ -17,23 +31,27 @@ void RefreshCanvas();
 int DrawAllScene();
 int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsigned int* lParam,void* callbackData);
 //--------------------------------------------------------------------------------------------------------------------
+//==============================================================================
+// Global variables
 CmtThreadPoolHandle MY_THREAD_POOL , RenderingID ,AnimationID ;
-int menuPanel,gamePanel,controlsPanel,wmp_Panel,optionsPanel,gameOverPanel;
-int gameOver;
+int menuPanel,gamePanel,controlsPanel,wmp_Panel,optionsPanel,gameOverPanel ,gameOver;
 int turn,pause;
-char* LeftBarrel[15];
-char* RightBarrel[15];
-char* Explosion[15];
+char*  LeftBarrel[15] ;
+char*  RightBarrel[15] ;
+char*  Explosion[15] ;
 double velocity ,windPower;
-static char windText[20] ;
- PROJECTILE* projectile;
+PROJECTILE* projectile;
 TANK* tanks[2];
 GROUND* ground;
+//==============================================================================
+// Static variables
+static char windText[20] ;
 static int postinghandle;
+//==============================================================================
+//Enums and constants 
 enum status {First_Tank_Fire,Second_Tank_Fire,No_One_Fire};
 enum status turn;
-int cnt = 0;
-
+//==============================================================================
 int main (int argc, char *argv[])
 {
 	if (InitCVIRTE (0, argv, 0) == 0)
@@ -167,20 +185,9 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 							SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
 							Fire_Projectile(projectile,tanks[0]);
 							pause =1 ;
-							//------------Need to be under Collision Detection-------------------
-							/*if(tanks[1]->health!=0)
-								DrawAllScene();
-							else		//tank is dead
-							{
-								//explotion should be here			
-								gameOver=1;
-								HidePanel(gamePanel);
-								DisplayPanel(gameOverPanel);
-								SetCtrlVal (gameOverPanel, GameOver_Tank_Won_String, "Left Tank won!");
-							}
-								*/
+							
 						}	
-							//-------------------------------------------------------------------
+							
 						
 						else
 						{
@@ -188,22 +195,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 							SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 1);
 							Fire_Projectile(projectile,tanks[1]);
 							pause =1 ;
-							//------------Need to be under Collision Detection-------------------
-							//tanks[0]->BeenHit(tanks[0]);
-							//RefreshCanvas();
-							/*if(tanks[0]->health!=0)
-								tanks[0]->DrawHealthBar(tanks[0]);
-							else		//tank is dead
-							{
-								//explotion should be here
-								gameOver=1;
-								HidePanel(gamePanel);
-								DisplayPanel(gameOverPanel);
-								SetCtrlVal (gameOverPanel, GameOver_Tank_Won_String, "Right Tank won!");
-							}
-								*/
 							
-							//-------------------------------------------------------------------
 								
 						}
 					turn=!turn;
@@ -241,8 +233,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 						tanks[0]->UpperBarrel(tanks[0]);
 						tanks[0]->SetBarrelImage(tanks[0],0);
 						DrawAllScene();
-						//tanks[0]->Draw_Tank(tanks[0]);
-						//tanks[0]->DrawHealthBar(tanks[0]);
+						
 						
 					}
 					break;
@@ -253,8 +244,7 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 						tanks[0]->LowerBarrel(tanks[0]);
 						tanks[0]->SetBarrelImage(tanks[0],0);
 						DrawAllScene();
-						//tanks[0]->Draw_Tank(tanks[0]);
-						//tanks[0]->DrawHealthBar(tanks[0]);
+						
 					}
 					break;
 					
@@ -262,8 +252,6 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					if(!turn&&!pause&&!gameOver)
 					{
 						tanks[0]->Move_NegX(tanks[0]);
-						//tanks[0]->Draw_Tank(tanks[0]);
-						//tanks[0]->DrawHealthBar(tanks[0]);//so the health bar will move with the tank
 						DrawAllScene();
 					}
 					break;
@@ -272,8 +260,6 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					if(!turn&&!pause&&!gameOver)
 					{
 						tanks[0]->Move_PosX(tanks[0]);
-						//tanks[0]->Draw_Tank(tanks[0]);
-						//tanks[0]->DrawHealthBar(tanks[0]);
 						DrawAllScene();
 					}
 					break;
@@ -284,8 +270,6 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 						tanks[1]->LowerBarrel(tanks[1]);
 						tanks[1]->SetBarrelImage(tanks[1],1);
 						DrawAllScene();
-						//tanks[1]->Draw_Tank(tanks[1]);
-						//tanks[1]->DrawHealthBar(tanks[1]);
 					}
 					break;
 					
@@ -295,8 +279,6 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 						tanks[1]->UpperBarrel(tanks[1]);
 						tanks[1]->SetBarrelImage(tanks[1],1);
 						DrawAllScene();
-						//tanks[1]->Draw_Tank(tanks[1]);
-						//tanks[1]->DrawHealthBar(tanks[1]);
 						
 					}
 					break;
@@ -305,8 +287,6 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					if(turn&&!pause&&!gameOver)
 					{
 						tanks[1]->Move_NegX(tanks[1]);
-						//tanks[1]->Draw_Tank(tanks[1]);
-						//tanks[1]->DrawHealthBar(tanks[1]);
 						DrawAllScene();
 					}
 					break;
@@ -315,8 +295,6 @@ int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsign
 					if(turn&&!pause&&!gameOver)
 					{
 						tanks[1]->Move_PosX(tanks[1]);
-						//tanks[1]->Draw_Tank(tanks[1]);
-						//tanks[1]->DrawHealthBar(tanks[1]);
 						DrawAllScene();
 					}
 					break;
@@ -472,21 +450,11 @@ void DiscardAll()
 	
 }
 
-void RefreshCanvas()
-{
-	CanvasClear(gamePanel,Game_Panel_CANVAS,VAL_ENTIRE_OBJECT);
-	for(int i=0;i<2;i++)					//Redraw the tanks and their health bars
-	{
-		tanks[i]->Draw_Tank(tanks[i]);
-		tanks[i]->DrawHealthBar(tanks[i]);
-		
-	}
-	
-}
+
 int DrawAllScene()
 {
 	
-
+	
 	ground->Draw_Ground(ground);
 	for(int i=0;i<2;i++)					
 	{
@@ -496,7 +464,6 @@ int DrawAllScene()
 	CanvasDefaultPen (gamePanel, Game_Panel_CANVAS);
 	sprintf(windText,"Wind : %f",windPower);
 	CanvasDrawTextAtPoint (gamePanel, Game_Panel_CANVAS, windText, VAL_APP_META_FONT, MakePoint(1850,50), VAL_CENTER);
-
 	return 0;
 }
 

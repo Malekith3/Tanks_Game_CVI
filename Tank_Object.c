@@ -1,11 +1,25 @@
+
+//==============================================================================
+//
+// Title:		Tank_Object.h
+// Purpose:		Tank Class oject with methods to Draw , move , change angle and health.
+//
+// Created on:	12/08/2020 at 19:59:41 by Barack Samuni and Alex Bordeaux.
+// Copyright:	Afeka academic college of engineering. All Rights Reserved.
+//
+//==============================================================================
+
+
+//------------------------------------------------------------------------------------------//
+// Include files
 #include <utility.h>
 #include "Tank_Game.h"
 #include <ansi_c.h>
 #include "Tank_Object.h"
 
-//----------------Varaiables---------------------------------------------------//
+//----------------------CONSTANTS---------------------------------------------------//
  const double deltaAngle=(90-0)/14.0;		//15 images going from 0 to 90 degrees
-//----------------------------------------------------------------------------//
+//---------------------------------------------------------------------------------//
 POSITION* new_POSITION(double x,double y)
 {
 	POSITION* position=calloc(1,sizeof(POSITION));

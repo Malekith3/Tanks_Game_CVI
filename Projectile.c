@@ -1,7 +1,7 @@
 //==============================================================================
 //
 // Title:		Projectile.c
-// Purpose:		A short description of the implementation.
+// Purpose:		Projectile class with drawing method and calcululating projectile starting position.
 //
 // Created on:	10/08/2020 at 8:48:35 by Alex Bordeaux.
 // Copyright:	Student. All Rights Reserved.
@@ -18,27 +18,12 @@
 #include "Physics_Engine.h"
 #include "Tank_Game.h"
 #include "Collison_Module.h"
-//==============================================================================
-// Constants
-
-//==============================================================================
-// Types
-
-//==============================================================================
-// Static global variables
 
 //==============================================================================
 // Static functions
 static void CheckCollisionForProjectile(PROJECTILE* projectile);
-//==============================================================================
-// Global variables
 
-//==============================================================================
-// Global functions
 
-/// HIFN  What does your function do?
-/// HIPAR x/What inputs does your function expect?
-/// HIRET What does your function return?
 PROJECTILE* new_PROJECTILE(POSITION* position)
 {
 	PROJECTILE* projectile=calloc(1,sizeof(PROJECTILE));
@@ -53,7 +38,9 @@ void Fire_Projectile(PROJECTILE* projectile , TANK* tank)
 {
 	PlaySound(ShootingSFX);
 	InitVelocety(tank);
-	if ( tank->position->x < 940 ) // Detect taht we deal with 
+	// Detect if left tank shoots or right .
+	// Then we calculating projectile starting position depending on barrel angle .
+	if ( tank->position->x < 940 ) 
 	{
 		projectile->position->x = tank->position->x + 160 + 80*cos(tank->angle);
 		projectile->position->y = tank->position->y + 92 - 80*sin(tank->angle);
@@ -78,7 +65,6 @@ void Fire_Projectile(PROJECTILE* projectile , TANK* tank)
 }
 void Draw_Projectile(PROJECTILE* projectile)
 {
-	//CanvasUpdate(gamePanel,Game_Panel_CANVAS,MakeRect(projectile->position->y,projectile->position->x,5,5));
 	CanvasClear(gamePanel,Game_Panel_CANVAS,MakeRect(projectile->position->y,projectile->position->x,5,5));
 	CalclTrace(projectile->position);
 	DetectCollision(projectile);

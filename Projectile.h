@@ -1,7 +1,7 @@
 //==============================================================================
 //
 // Title:		Projectile.h
-// Purpose:		A short description of the interface.
+// Purpose:		Interface for Projectile class.
 //
 // Created on:	10/08/2020 at 8:48:35 by Alex Bordeaux.
 // Copyright:	Student. All Rights Reserved.
@@ -20,8 +20,6 @@
 
 #include "cvidef.h"
 #include "Tank_Object.h"
-//==============================================================================
-// Constants
 
 //==============================================================================
 // Types

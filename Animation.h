@@ -1,7 +1,7 @@
 //==============================================================================
 //
 // Title:		Animation.h
-// Purpose:		A short description of the interface.
+// Purpose:		Interface for explosion animation.
 //
 // Created on:	26/08/2020 at 20:43:19 by Barack Samuni.
 // Copyright:	Afeka academic college of engineering. All Rights Reserved.
@@ -20,11 +20,6 @@
 
 #include "cvidef.h"
 #include "Projectile.h"
-//==============================================================================
-// Constants
-
-//==============================================================================
-// Types
 
 //==============================================================================
 // External variables

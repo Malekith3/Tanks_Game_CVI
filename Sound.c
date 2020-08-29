@@ -15,24 +15,11 @@
 
 #include "Sound.h"
 #include "Tank_Game.h"
-//==============================================================================
-// Constants
-
-//==============================================================================
-// Types
 
 //==============================================================================
 // Static global variables
 static CAObjHandle WMP_Handle;
 static VBOOL mute;
-//==============================================================================
-// Static functions
-
-//==============================================================================
-// Global variables
-
-//==============================================================================
-// Global functions
 
 void Create_WMP_Handle ()		
 {
@@ -42,8 +29,6 @@ void Create_WMP_Handle ()
 void PlaySound(char* path)
 {
 	
-	//WMPLib_IWMPSettingsGetmute (WMP_Handle, NULL, &mute);
-	//if(mute==VFALSE)
 	WMPLib_IWMPPlayer4SetURL (WMP_Handle, NULL, path);
 
 }

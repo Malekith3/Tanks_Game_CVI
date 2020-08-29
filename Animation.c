@@ -1,7 +1,7 @@
 //==============================================================================
 //
 // Title:		Animation.c
-// Purpose:		includes Animation function
+// Purpose:		includes Animation function for explosion
 //
 // Created on:	26/08/2020 at 20:43:19 by Barack Samuni.
 // Copyright:	Afeka academic college of engineering. All Rights Reserved.
@@ -16,27 +16,13 @@
 #include <utility.h>
 #include "Animation.h"
 #include "Tank_Game.h"
-//==============================================================================
-// Constants
 
 //==============================================================================
-// Types
-
-//==============================================================================
-// Static global variables
-
-//==============================================================================
-// Static functions
-
-//==============================================================================
-// Global variables
-int* AnimationImage;
+// Global static variables
+static int* AnimationImage;
 //==============================================================================
 // Global functions
 
-/// HIFN  What does your function do?
-/// HIPAR x/What inputs does your function expect?
-/// HIRET What does your function return?
 
 int AnimateExplosion() 
 {

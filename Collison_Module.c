@@ -1,9 +1,9 @@
 //==============================================================================
 //
 // Title:		Collison_Module.c
-// Purpose:		A short description of the implementation.
+// Purpose:		Collison calculation for projectile .
 //
-// Created on:	8/22/2020 at 3:09:46 PM by Alex Bordeaux.
+// Created on:	8/22/2020 at 3:09:46 PM by Alex Bordeaux and Barack Samuni (Animation and Game over).
 // Copyright:	Student. All Rights Reserved.
 //
 //==============================================================================
@@ -24,9 +24,6 @@
 const double C_Y = 510,C_X =1280 , A_X =600 ,A_Y = 530 ,B_X =940 , B_Y =120 ;
 
 //==============================================================================
-// Types
-
-//==============================================================================
 // Static global variables
 extern CmtThreadPoolHandle MY_THREAD_POOL , AnimationID;
 //==============================================================================
@@ -35,6 +32,7 @@ static void CheckCollisionForProjectileAndGround(PROJECTILE* projectile);
 static int poinInTriangle(PROJECTILE* projectile); // function to determine if point in triangle
 static int TankProjectileCollDitection(PROJECTILE* projectile);//
 static void SaveStateOfProjectile(PROJECTILE* projectile);//
+
 //==============================================================================
 // Global variables
 PROJECTILE* ghostProjectiile;
@@ -45,17 +43,16 @@ extern int DrawAllScene();
 void DetectCollision(PROJECTILE* projectile)
 {
 	CheckCollisionForProjectileAndGround(projectile);
-	//Cheking mounten collision
+	
 	if(poinInTriangle(projectile))
 	{
 		SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
-		//DrawAllScene();
 		SaveStateOfProjectile(projectile);
 		PlaySound(ExplosionSFX);
 		CmtScheduleThreadPoolFunction (MY_THREAD_POOL, AnimateExplosion, NULL, &AnimationID);
 		projectile->position->y = 1090;
 		SetCtrlAttribute (gamePanel, Game_Panel_TIMER, ATTR_ENABLED, 0);
-		//DrawAllScene();
+		
 		
 	
 	}

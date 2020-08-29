@@ -1,7 +1,7 @@
 //==============================================================================
 //
 // Title:		Sound.h
-// Purpose:		A short description of the interface.
+// Purpose:		Interface for sound play functions.
 //
 // Created on:	12/08/2020 at 19:59:41 by Barack Samuni.
 // Copyright:	Afeka academic college of engineering. All Rights Reserved.
@@ -25,8 +25,6 @@
 #define ShootingSFX "Sounds\\Tank_Shooting.mp3"
 #define ExplosionSFX "Sounds\\Explosion.mp3"
 #define InitialVolume 50
-//==============================================================================
-// Types
 
 //==============================================================================
 // External variables

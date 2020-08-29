@@ -1,7 +1,7 @@
 //==============================================================================
 //
 // Title:		Collison_Module.h
-// Purpose:		A short description of the interface.
+// Purpose:		Collison interface for projectile .
 //
 // Created on:	8/22/2020 at 3:09:46 PM by Alex Bordeaux.
 // Copyright:	Student. All Rights Reserved.

@@ -1,8 +1,22 @@
+//==============================================================================
+//
+// Title:		Tank_Object.h
+// Purpose:		Tank Class interface with methods to Draw , move , change angle and health.
+//
+// Created on:	12/08/2020 at 19:59:41 by Barack Samuni and Alex Bordeaux.
+// Copyright:	Afeka academic college of engineering. All Rights Reserved.
+//
+//==============================================================================
+
+
+
+
 #ifndef Tank_Object_h
 #define Tank_Object_h
-
+//------------------------------------------------------------------------------------------//
+// Include files
 #include "Ground_Object.h"
-
+//------------------------------------------------------------------------------------------//
 //------------------------------Objects definition------------------------------------------//
 typedef struct position												//includes position in cartesian coordinates
 {

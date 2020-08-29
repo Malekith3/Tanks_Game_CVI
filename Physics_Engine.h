@@ -1,7 +1,7 @@
 //==============================================================================
 //
 // Title:		Physics_Engine.h
-// Purpose:		A short description of the interface.
+// Purpose:		Interface for Physics engine phynctions.
 //
 // Created on:	09/08/2020 at 17:31:08 by Alex Bordeaux.
 // Copyright:	Student. All Rights Reserved.
