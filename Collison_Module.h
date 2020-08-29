@@ -21,6 +21,7 @@
 #include "cvidef.h"
 #include "Tank_Object.h"
 #include "Projectile.h"
+#include "Ground_Object.h"
 //==============================================================================
 // Constants
 

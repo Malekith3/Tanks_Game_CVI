@@ -120,7 +120,7 @@ static void CheckCollisionForProjectileAndGround(PROJECTILE* projectile)
 
 static int poinInTriangle(PROJECTILE* projectile)
 {
-	//This is some linear algebra voodoo  . If you want munderstand what the hell is this  here link https://www.youtube.com/watch?v=HYAgJN3x4GA .
+	//This is some linear algebra voodoo  . If you want  to understand what the hell is this,  check this link https://www.youtube.com/watch?v=HYAgJN3x4GA .
 	double s1 = C_Y - A_Y ;
 	double s2 = C_X-A_X;
 	double s3 = B_Y - A_Y;

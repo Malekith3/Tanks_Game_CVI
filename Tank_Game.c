@@ -27,7 +27,6 @@
 ///////////////////////////Functions/////////////////////
 void InitializeGame();
 void DiscardAll();
-void RefreshCanvas();
 int DrawAllScene();
 int CVICALLBACK KeyupCallback(int panel, int message,unsigned int* wParam,unsigned int* lParam,void* callbackData);
 //--------------------------------------------------------------------------------------------------------------------

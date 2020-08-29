@@ -40,7 +40,7 @@ void Fire_Projectile(PROJECTILE* projectile , TANK* tank)
 	InitVelocety(tank);
 	// Detect if left tank shoots or right .
 	// Then we calculating projectile starting position depending on barrel angle .
-	if ( tank->position->x < 940 ) 
+	if ( tank->position->x < 940 ) //940 is the top of the hill, so left of it is the left tank.
 	{
 		projectile->position->x = tank->position->x + 160 + 80*cos(tank->angle);
 		projectile->position->y = tank->position->y + 92 - 80*sin(tank->angle);
