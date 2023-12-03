@@ -1,5 +1,5 @@
 # Tanks Game Project
-**Video Demo**
+**Video Demo**:
 
 [![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/Hd1FD4XOHVs/0.jpg)](http://www.youtube.com/watch?v=Hd1FD4XOHVs)
 
