@@ -1,6 +1,6 @@
 # Tanks Game Project
 
-[![Tanks Game Demo](/Assets/tanks_game.jpg)](https://www.youtube.com/watch?v=Hd1FD4XOHVs&t=49s&ab_channel=AlexBordeaux)
+[![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/Hd1FD4XOHVs/0.jpg)](http://www.youtube.com/watch?v=Hd1FD4XOHVs)
 
 As part of our final assignment in the system programming course, we developed a Tanks game, reminiscent of the well-known game "The Worms." The project was implemented in the CVI environment using the C programming language.
 
